@@ -19,7 +19,7 @@
 
     <fragment
         android:id="@+id/nav_slideshow"
-        android:name="project.st991532818.org.ui.slideshow.SlideshowFragment"
-        android:label="@string/menu_slideshow"
-        tools:layout="@layout/fragment_slideshow" />
+        android:name="project.st991532818.org.ui.add_expenses.AddExpenseFragment"
+        android:label="@string/menu_add_expenses"
+        tools:layout="@layout/fragment_addexpense" />
 </navigation>
