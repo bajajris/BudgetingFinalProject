@@ -7,7 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import project.st991532818.org.R
-import project.st991532818.org.databinding.FragmentAddexpenseBinding
+import project.st991532818.org.databinding.FragmentAddactivityBinding
 import project.st991532818.org.databinding.FragmentSavingsBinding
 import org.eazegraph.lib.models.PieModel
 

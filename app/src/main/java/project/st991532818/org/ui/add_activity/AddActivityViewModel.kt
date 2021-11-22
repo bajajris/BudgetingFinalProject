@@ -1,4 +1,4 @@
-package project.st991532818.org.ui.add_expenses
+package project.st991532818.org.ui.add_activity
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -7,7 +7,7 @@ import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
 import project.st991532818.org.model.expenses.Expense
 
-class AddExpenseViewModel : ViewModel() {
+class AddActivityViewModel : ViewModel() {
 
     private val _text = MutableLiveData<String>().apply {
         value = "This is slideshow Fragment"

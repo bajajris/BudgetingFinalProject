@@ -11,6 +11,7 @@ class PaymentReminder(name: String,
     var name: String = ""
     var dateTime: Date = Date()
     var isActive: Boolean = false
+    //todo implement a repeat frequency
     var repeat: Boolean = false
     var amount: Double = 0.0
     var payee: String = ""

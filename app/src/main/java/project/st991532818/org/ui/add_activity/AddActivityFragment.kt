@@ -1,8 +1,6 @@
-package project.st991532818.org.ui.add_expenses
+package project.st991532818.org.ui.add_activity
 
-import android.app.Activity
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -13,16 +11,13 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import androidx.navigation.fragment.findNavController
-import com.whiteelephant.monthpicker.MonthPickerDialog
 import project.st991532818.org.R
-import project.st991532818.org.databinding.FragmentAddexpenseBinding
-import java.util.*
+import project.st991532818.org.databinding.FragmentAddactivityBinding
 
-class AddExpenseFragment : Fragment() {
+class AddActivityFragment : Fragment() {
 
-    private lateinit var addExpenseViewModel: AddExpenseViewModel
-    private var _binding: FragmentAddexpenseBinding? = null
+    private lateinit var addActivityViewModel: AddActivityViewModel
+    private var _binding: FragmentAddactivityBinding? = null
 
     // This property is only valid between onCreateView and
     // onDestroyView.
@@ -33,10 +28,10 @@ class AddExpenseFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        addExpenseViewModel =
-            ViewModelProvider(this).get(AddExpenseViewModel::class.java)
+        addActivityViewModel =
+            ViewModelProvider(this).get(AddActivityViewModel::class.java)
 
-        _binding = FragmentAddexpenseBinding.inflate(inflater, container, false)
+        _binding = FragmentAddactivityBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
 
@@ -49,9 +44,9 @@ class AddExpenseFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
 
-        val textView: TextView = binding.textMonth
-        addExpenseViewModel.text.observe(viewLifecycleOwner, Observer {
-            textView.text = it
+        val monthTextView: TextView = binding.textMonth
+        addActivityViewModel.text.observe(viewLifecycleOwner, Observer {
+            monthTextView.text = it
         })
 
         val spinnerMonth = binding.monthSpinner
@@ -84,6 +79,36 @@ class AddExpenseFragment : Fragment() {
             }
         }
 
+        val spinnerActivityCategory = binding.editExpenseCategory
+        // Create an ArrayAdapter using the string array and a default spinner layout
+        context?.let {
+            ArrayAdapter.createFromResource(
+                it,
+                R.array.category_array,
+                // todo change this array to dynamic array (user can add manage its items)
+                android.R.layout.simple_spinner_item
+            ).also { adapter ->
+                // Specify the layout to use when the list of choices appears
+                adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+                // Apply the adapter to the spinner
+                spinnerActivityCategory.adapter = adapter
+            }
+        }
+
+        val spinnerActivityType = binding.activitytypeSpinner
+        context?.let{
+            ArrayAdapter.createFromResource(
+                it,
+                R.array.activity_array,
+                android.R.layout.simple_spinner_item
+            ).also { adapter ->
+                // Specify the layout to use when the list of choices appears
+                adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+                // Apply the adapter to the spinner
+                spinnerActivityType.adapter = adapter
+            }
+        }
+
         spinnerMonth.onItemSelectedListener = object :
             AdapterView.OnItemSelectedListener {
             override fun onItemSelected(
@@ -93,7 +118,7 @@ class AddExpenseFragment : Fragment() {
                 id: Long
             ) {
                 if (parent != null) {
-                    addExpenseViewModel.updateText(parent.getItemAtPosition(position).toString())
+                    addActivityViewModel.updateText(parent.getItemAtPosition(position).toString())
                 }
             }
 
@@ -107,12 +132,13 @@ class AddExpenseFragment : Fragment() {
         }
 
     }
+    // onViewCreated Ends here
 
     private fun addNewItem() {
         if (isEntryValid()) {
-            addExpenseViewModel.addNewExpense(
+            addActivityViewModel.addNewExpense(
                 binding.editExpenseAmount.text.toString(),
-                binding.editExpenseCategory.text.toString(),
+                binding.editExpenseCategory.selectedItem.toString(),
             )
             Toast.makeText(context, "Expense Added. Expense list is updated!!", Toast.LENGTH_SHORT)
 //            val action = AddItemFragmentDirections.actionAddItemFragmentToItemListFragment()
@@ -121,9 +147,9 @@ class AddExpenseFragment : Fragment() {
     }
 
     private fun isEntryValid(): Boolean {
-        return addExpenseViewModel.isEntryValid(
+        return addActivityViewModel.isEntryValid(
             binding.editExpenseAmount.text.toString(),
-            binding.editExpenseCategory.text.toString()
+            binding.editExpenseCategory.selectedItem.toString()
         )
     }
 
