@@ -9,14 +9,15 @@ import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.TextView
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.findNavController
 import com.whiteelephant.monthpicker.MonthPickerDialog
 import project.st991532818.org.R
 import project.st991532818.org.databinding.FragmentAddexpenseBinding
 import java.util.*
-private lateinit var addExpenseViewModel: AddExpenseViewModel
 
 class AddExpenseFragment : Fragment() {
 
@@ -38,10 +39,20 @@ class AddExpenseFragment : Fragment() {
         _binding = FragmentAddexpenseBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
-//        val textView: TextView = binding.textSlideshow
-//        addExpenseViewModel.text.observe(viewLifecycleOwner, Observer {
-//            textView.text = it
-//        })
+
+
+
+        return root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+
+        val textView: TextView = binding.textMonth
+        addExpenseViewModel.text.observe(viewLifecycleOwner, Observer {
+            textView.text = it
+        })
 
         val spinnerMonth = binding.monthSpinner
         // Create an ArrayAdapter using the string array and a default spinner layout
@@ -90,7 +101,30 @@ class AddExpenseFragment : Fragment() {
                 //TODO("Not yet implemented")
             }
         }
-        return root
+
+        binding.btnAddexpense.setOnClickListener {
+            addNewItem()
+        }
+
+    }
+
+    private fun addNewItem() {
+        if (isEntryValid()) {
+            addExpenseViewModel.addNewExpense(
+                binding.editExpenseAmount.text.toString(),
+                binding.editExpenseCategory.text.toString(),
+            )
+            Toast.makeText(context, "Expense Added. Expense list is updated!!", Toast.LENGTH_SHORT)
+//            val action = AddItemFragmentDirections.actionAddItemFragmentToItemListFragment()
+//            findNavController().navigate(action)
+        }
+    }
+
+    private fun isEntryValid(): Boolean {
+        return addExpenseViewModel.isEntryValid(
+            binding.editExpenseAmount.text.toString(),
+            binding.editExpenseCategory.text.toString()
+        )
     }
 
     override fun onDestroyView() {

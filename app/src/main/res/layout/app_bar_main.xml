@@ -19,7 +19,7 @@
             app:popupTheme="@style/Theme.BudgetingFinalProject.PopupOverlay" />
 
     </com.google.android.material.appbar.AppBarLayout>
-
+na
     <include layout="@layout/content_main" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton

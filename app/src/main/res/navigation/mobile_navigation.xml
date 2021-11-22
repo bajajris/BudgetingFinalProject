@@ -18,8 +18,14 @@
         tools:layout="@layout/fragment_gallery" />
 
     <fragment
-        android:id="@+id/nav_slideshow"
+        android:id="@+id/nav_addexpense"
         android:name="project.st991532818.org.ui.add_expenses.AddExpenseFragment"
         android:label="@string/menu_add_expenses"
         tools:layout="@layout/fragment_addexpense" />
+
+    <fragment
+        android:id="@+id/nav_savings"
+        android:name="project.st991532818.org.ui.savings.SavingsFragment"
+        android:label="@string/menu_savings"
+        tools:layout="@layout/fragment_savings" />
 </navigation>
