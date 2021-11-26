@@ -12,8 +12,7 @@ import com.google.android.gms.tasks.OnFailureListener
 import com.google.firebase.firestore.DocumentReference
 
 import com.google.android.gms.tasks.OnSuccessListener
-
-
+import project.st991532818.org.model.expenses.Budget
 
 
 class AddActivityViewModel(private val ff: FirebaseFirestore) : ViewModel() {
@@ -30,6 +29,11 @@ class AddActivityViewModel(private val ff: FirebaseFirestore) : ViewModel() {
     fun addNewExpense(expenseAmount: String, expenseCategory: String, month: String, year: String) {
         val newExpense = getNewExpenseEntry(expenseAmount, expenseCategory, month, year)
         insertExpense(newExpense)
+    }
+
+    fun addNewBudget(budgetAmount: String, month: String, year: String) {
+        val newBudget = getNewBudgetEntry(budgetAmount, month, year)
+        insertBudget(newBudget)
     }
 
     private fun insertExpense(expense: Expense) {
@@ -64,6 +68,37 @@ class AddActivityViewModel(private val ff: FirebaseFirestore) : ViewModel() {
                 })
         }
     }
+    private fun insertBudget(budget: Budget) {
+        viewModelScope.launch {
+            // TODO ("Add implementation to insert an expense into firestore")
+//            itemDao.insert(item)
+            // Create a new user with a first and last name
+            // Create a new user with a first and last name
+            val myBudget: MutableMap<String, Any> = HashMap()
+            myBudget["year"] = budget.year
+            myBudget["month"] = budget.month
+            myBudget["amount"] = budget.amount
+
+            // Add a new document with a generated ID
+
+            // Add a new document with a generated ID
+            ff.collection("budgets")
+                .add(myBudget)
+                .addOnSuccessListener(OnSuccessListener<DocumentReference> { documentReference ->
+                    Log.d(
+                        "TAG",
+                        "DocumentSnapshot added with ID: " + documentReference.id
+                    )
+                })
+                .addOnFailureListener(OnFailureListener { e ->
+                    Log.w(
+                        "TAG",
+                        "Error adding document",
+                        e
+                    )
+                })
+        }
+    }
 
     private fun getNewExpenseEntry(expenseAmount: String, expenseCategory: String, month: String, year: String): Expense {
         return Expense(
@@ -73,8 +108,22 @@ class AddActivityViewModel(private val ff: FirebaseFirestore) : ViewModel() {
             year = year.toInt()
         )
     }
-    fun isEntryValid(expenseAmount: String, expenseCategory: String): Boolean {
+    private fun getNewBudgetEntry(budgetAmount: String, month: String, year: String): Budget {
+        return Budget(
+            amount = budgetAmount.toDouble(),
+            month = month,
+            year = year.toInt()
+        )
+    }
+    fun isExpenseEntryValid(expenseAmount: String, expenseCategory: String): Boolean {
         if (expenseAmount.isBlank() || expenseCategory.isBlank()) {
+            return false
+        }
+        return true
+    }
+
+    fun isBudgetEntryValid(budgetAmount: String): Boolean {
+        if (budgetAmount.isBlank()) {
             return false
         }
         return true
