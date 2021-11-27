@@ -2,25 +2,29 @@ package project.st991532818.org.ui.add_activity
 
 import android.util.Log
 import androidx.lifecycle.*
-import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.coroutines.launch
 import project.st991532818.org.model.expenses.Expense
 import androidx.annotation.NonNull
 
 import com.google.android.gms.tasks.OnFailureListener
 
-import com.google.firebase.firestore.DocumentReference
-
 import com.google.android.gms.tasks.OnSuccessListener
+import com.google.firebase.firestore.*
+import kotlinx.coroutines.tasks.await
 import project.st991532818.org.model.expenses.Budget
 
 
 class AddActivityViewModel(private val ff: FirebaseFirestore) : ViewModel() {
 
     private val _text = MutableLiveData<String>().apply {
-        value = "This is slideshow Fragment"
+        value = "This is a Fragment"
     }
     var text: LiveData<String> = _text
+    var budgetExists = false
+    var budgetCollection = ff.collection("budgets")
+    var expensesCollection = ff.collection("expenses")
+
+    lateinit var docId: String
 
     fun updateText(t: String){
         _text.value = t
@@ -34,6 +38,28 @@ class AddActivityViewModel(private val ff: FirebaseFirestore) : ViewModel() {
     fun addNewBudget(budgetAmount: String, month: String, year: String) {
         val newBudget = getNewBudgetEntry(budgetAmount, month, year)
         insertBudget(newBudget)
+    }
+
+    fun budgetExists(month: String, year: String){
+        viewModelScope.launch {
+            budgetExistsLaunch(month,year)
+        }
+    }
+
+    private suspend fun budgetExistsLaunch(month: String, year: String){
+        var query = budgetCollection
+            .whereEqualTo("month", month)
+            .whereEqualTo("year", year.toInt())
+            .get().await()
+        if(query.documents.isNotEmpty()){
+            _text.value = "Budget Already Exists for $month, $year: ${query.documents[0].get("amount")}"
+            docId = query.documents[0].id
+            budgetExists = true
+        }else{
+            _text.value = "No Budget for $month, $year"
+            docId = ""
+            budgetExists = false
+        }
     }
 
     private fun insertExpense(expense: Expense) {
@@ -51,7 +77,7 @@ class AddActivityViewModel(private val ff: FirebaseFirestore) : ViewModel() {
             // Add a new document with a generated ID
 
             // Add a new document with a generated ID
-            ff.collection("expenses")
+            expensesCollection
                 .add(myExpense)
                 .addOnSuccessListener(OnSuccessListener<DocumentReference> { documentReference ->
                     Log.d(
@@ -69,35 +95,40 @@ class AddActivityViewModel(private val ff: FirebaseFirestore) : ViewModel() {
         }
     }
     private fun insertBudget(budget: Budget) {
-        viewModelScope.launch {
-            // TODO ("Add implementation to insert an expense into firestore")
-//            itemDao.insert(item)
-            // Create a new user with a first and last name
-            // Create a new user with a first and last name
-            val myBudget: MutableMap<String, Any> = HashMap()
-            myBudget["year"] = budget.year
-            myBudget["month"] = budget.month
-            myBudget["amount"] = budget.amount
+        if(budgetExists){
+            viewModelScope.launch {
+                budgetCollection.document(
+                   docId
+                ).update("amount", budget.amount).addOnSuccessListener {
+                    Log.d("TAG", "Document Updated")
+                }
+            }
+        }else{
+            viewModelScope.launch {
+                val myBudget: MutableMap<String, Any> = HashMap()
+                myBudget["year"] = budget.year
+                myBudget["month"] = budget.month
+                myBudget["amount"] = budget.amount
 
-            // Add a new document with a generated ID
-
-            // Add a new document with a generated ID
-            ff.collection("budgets")
-                .add(myBudget)
-                .addOnSuccessListener(OnSuccessListener<DocumentReference> { documentReference ->
-                    Log.d(
-                        "TAG",
-                        "DocumentSnapshot added with ID: " + documentReference.id
-                    )
-                })
-                .addOnFailureListener(OnFailureListener { e ->
-                    Log.w(
-                        "TAG",
-                        "Error adding document",
-                        e
-                    )
-                })
+                // Add a new document with a generated ID
+                budgetCollection
+                    .add(myBudget)
+                    .addOnSuccessListener(OnSuccessListener<DocumentReference> { documentReference ->
+                        Log.d(
+                            "TAG",
+                            "DocumentSnapshot added with ID: " + documentReference.id
+                        )
+                    })
+                    .addOnFailureListener(OnFailureListener { e ->
+                        Log.w(
+                            "TAG",
+                            "Error adding document",
+                            e
+                        )
+                    })
+            }
         }
+
     }
 
     private fun getNewExpenseEntry(expenseAmount: String, expenseCategory: String, month: String, year: String): Expense {

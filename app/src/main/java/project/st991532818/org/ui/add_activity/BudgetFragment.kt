@@ -46,10 +46,8 @@ class BudgetFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val monthTextView: TextView = binding.textMonth
-        addActivityViewModel.text.observe(viewLifecycleOwner, Observer {
-            monthTextView.text = it
-        })
+        val textView: TextView = binding.textBudgetExists
+
         val spinnerMonth = binding.monthSpinner
         // Create an ArrayAdapter using the string array and a default spinner layout
         context?.let {
@@ -88,10 +86,29 @@ class BudgetFragment : Fragment() {
                 id: Long
             ) {
                 if (parent != null) {
-                    addActivityViewModel.updateText(parent.getItemAtPosition(position).toString())
+                    checkExistingBudget(spinnerMonth.selectedItem.toString(), spinnerYear.selectedItem.toString())
                 }
             }
 
+
+
+            override fun onNothingSelected(parent: AdapterView<*>?) {
+                //TODO("Not yet implemented")
+            }
+        }
+
+        spinnerYear.onItemSelectedListener = object :
+            AdapterView.OnItemSelectedListener {
+            override fun onItemSelected(
+                parent: AdapterView<*>?,
+                view: View?,
+                position: Int,
+                id: Long
+            ) {
+                if (parent != null) {
+                    checkExistingBudget(spinnerMonth.selectedItem.toString(), spinnerYear.selectedItem.toString())
+                }
+            }
             override fun onNothingSelected(parent: AdapterView<*>?) {
                 //TODO("Not yet implemented")
             }
@@ -100,10 +117,15 @@ class BudgetFragment : Fragment() {
             Log.i("TEST",spinnerMonth.selectedItem.toString())
             addNewItem(spinnerMonth.selectedItem.toString(), spinnerYear.selectedItem.toString())
         }
+        addActivityViewModel.text.observe(viewLifecycleOwner, Observer {
+            textView.text = it
+        })
 
     }
     // onViewCreated Ends here
-
+    private fun checkExistingBudget(month: String, year: String){
+        addActivityViewModel.budgetExists(month, year)
+    }
     private fun addNewItem(month: String, year: String) {
         if (isEntryValid()) {
             addActivityViewModel.addNewBudget(
@@ -122,7 +144,6 @@ class BudgetFragment : Fragment() {
             binding.editBudgetAmount.text.toString(),
         )
     }
-
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null

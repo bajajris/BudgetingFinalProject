@@ -50,10 +50,6 @@ class ExpenseFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val monthTextView: TextView = binding.textMonth
-        addActivityViewModel.text.observe(viewLifecycleOwner, Observer {
-            monthTextView.text = it
-        })
         val spinnerMonth = binding.monthSpinner
         // Create an ArrayAdapter using the string array and a default spinner layout
         context?.let {
@@ -100,23 +96,22 @@ class ExpenseFragment : Fragment() {
         }
 
 
-        spinnerMonth.onItemSelectedListener = object :
-            AdapterView.OnItemSelectedListener {
-            override fun onItemSelected(
-                parent: AdapterView<*>?,
-                view: View?,
-                position: Int,
-                id: Long
-            ) {
-                if (parent != null) {
-                    addActivityViewModel.updateText(parent.getItemAtPosition(position).toString())
-                }
-            }
-
-            override fun onNothingSelected(parent: AdapterView<*>?) {
-                //TODO("Not yet implemented")
-            }
-        }
+//        spinnerMonth.onItemSelectedListener = object :
+//            AdapterView.OnItemSelectedListener {
+//            override fun onItemSelected(
+//                parent: AdapterView<*>?,
+//                view: View?,
+//                position: Int,
+//                id: Long
+//            ) {
+//                if (parent != null) {
+//                }
+//            }
+//
+//            override fun onNothingSelected(parent: AdapterView<*>?) {
+//                //TODO("Not yet implemented")
+//            }
+//        }
         binding.btnAddExpense.setOnClickListener {
             Log.i("TEST",spinnerMonth.selectedItem.toString())
             addNewItem(spinnerMonth.selectedItem.toString(), spinnerYear.selectedItem.toString())
