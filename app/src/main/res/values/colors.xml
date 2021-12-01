@@ -21,4 +21,18 @@
     <color name="Python">#66BB6A</color>
     <color name="CPP">#EF5350</color>
     <color name="Java">#29B6F6</color>
+
+
+    <color name="bg_black">#ff212738</color>
+    <color name="bg_white">#ffF7F7F7</color>
+    <color name="dark_gray">#494949</color>
+    <color name="silver">#6D6262</color>
+    <color name="bg_blue">#57c4e5</color>
+
+
+
+    <color name="danger">#ffF97068</color>
+    <color name="warning">#FFD1D646</color>
+    <color name="info">#FFBEBEBE</color>
+    <color name="success">#FF76D13A</color>
 </resources>
