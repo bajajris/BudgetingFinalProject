@@ -64,18 +64,11 @@ class AddActivityViewModel(private val ff: FirebaseFirestore) : ViewModel() {
 
     private fun insertExpense(expense: Expense) {
         viewModelScope.launch {
-            // TODO ("Add implementation to insert an expense into firestore")
-//            itemDao.insert(item)
-            // Create a new user with a first and last name
-            // Create a new user with a first and last name
             val myExpense: MutableMap<String, Any> = HashMap()
             myExpense["year"] = expense.year
             myExpense["month"] = expense.month
             myExpense["amount"] = expense.amount
             myExpense["category"] = expense.category
-
-            // Add a new document with a generated ID
-
             // Add a new document with a generated ID
             expensesCollection
                 .add(myExpense)
