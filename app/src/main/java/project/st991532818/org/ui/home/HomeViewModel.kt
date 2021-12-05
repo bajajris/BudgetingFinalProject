@@ -1,13 +1,43 @@
 package project.st991532818.org.ui.home
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
+import android.util.Log
+import androidx.lifecycle.*
+import kotlinx.coroutines.launch
+import com.google.firebase.firestore.*
 
-class HomeViewModel : ViewModel() {
 
-    private val _text = MutableLiveData<String>().apply {
-        value = "This is home Fragment"
+class HomeViewModel(private val ff: FirebaseFirestore) : ViewModel() {
+
+    var expensesCollection = ff.collection("expenses")
+
+
+    fun updateExpense(uid: String, amt: String, cat: String) {
+        viewModelScope.launch {
+            expensesCollection.document(
+                uid
+            ).update("amount", amt.toDouble(), "category", cat).addOnSuccessListener {
+                Log.d("TAG", "Document Updated")
+            }
+        }
     }
-    val text: LiveData<String> = _text
+
+    fun deleteExpense(uid: String) {
+        viewModelScope.launch {
+            expensesCollection.document(
+                uid
+            ).delete().addOnSuccessListener {
+                Log.d("TAG", "Document Updated")
+            }
+        }
+    }
+
 }
+    class HomeViewModelFactory(private val ff: FirebaseFirestore) : ViewModelProvider.Factory {
+        override fun <T : ViewModel> create(modelClass: Class<T>): T {
+            if (modelClass.isAssignableFrom(HomeViewModel::class.java)) {
+                @Suppress("UNCHECKED_CAST")
+                return HomeViewModel(ff) as T
+            }
+            throw IllegalArgumentException("Unknown ViewModel class")        }
+
+    }

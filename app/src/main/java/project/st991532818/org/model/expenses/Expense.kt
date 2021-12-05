@@ -1,7 +1,7 @@
 package project.st991532818.org.model.expenses
 
-class Expense (amount: Double, category: String, month: String, year: Int) {
-    var id: String = "";
+class Expense (amount: Double = 0.0, category: String = "", month: String = "", year: Int = 0) {
+    var uid: String = "";
     var amount: Double = 0.0
     var category: String = ""
     var month: String = ""

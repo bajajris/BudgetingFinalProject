@@ -9,6 +9,7 @@ import androidx.annotation.NonNull
 import com.google.android.gms.tasks.OnFailureListener
 
 import com.google.android.gms.tasks.OnSuccessListener
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.*
 import kotlinx.coroutines.tasks.await
 import project.st991532818.org.model.expenses.Budget
@@ -50,6 +51,7 @@ class AddActivityViewModel(private val ff: FirebaseFirestore) : ViewModel() {
         var query = budgetCollection
             .whereEqualTo("month", month)
             .whereEqualTo("year", year.toInt())
+            .whereEqualTo("userid", FirebaseAuth.getInstance().currentUser?.uid.toString())
             .get().await()
         if(query.documents.isNotEmpty()){
             _text.value = "Budget Already Exists for $month, $year: ${query.documents[0].get("amount")}"
@@ -65,6 +67,7 @@ class AddActivityViewModel(private val ff: FirebaseFirestore) : ViewModel() {
     private fun insertExpense(expense: Expense) {
         viewModelScope.launch {
             val myExpense: MutableMap<String, Any> = HashMap()
+            myExpense["userid"] = FirebaseAuth.getInstance().currentUser?.uid.toString()
             myExpense["year"] = expense.year
             myExpense["month"] = expense.month
             myExpense["amount"] = expense.amount
@@ -99,6 +102,7 @@ class AddActivityViewModel(private val ff: FirebaseFirestore) : ViewModel() {
         }else{
             viewModelScope.launch {
                 val myBudget: MutableMap<String, Any> = HashMap()
+                myBudget["userid"] = FirebaseAuth.getInstance().currentUser?.uid.toString()
                 myBudget["year"] = budget.year
                 myBudget["month"] = budget.month
                 myBudget["amount"] = budget.amount

@@ -1,17 +1,16 @@
 package project.st991532818.org.adapters
 
 import android.R
+import android.app.AlertDialog
 import android.content.Context
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import project.st991532818.org.databinding.ListItemExpenseBinding
 import project.st991532818.org.model.expenses.Expense
-import java.time.LocalDateTime
-import java.time.format.DateTimeFormatter
-import java.time.format.FormatStyle
 import java.util.*
-import kotlin.collections.ArrayList
 
 class ExpensesAdapter(private val context: Context, private val dataSource: ArrayList<Expense>) : RecyclerView.Adapter<ExpensesAdapter.VH>() {
 
@@ -29,6 +28,7 @@ class ExpensesAdapter(private val context: Context, private val dataSource: Arra
         return VH(binding)
     }
 
+
     override fun onBindViewHolder(holder: VH, position: Int) {
         val e = dataSource[position]
         var col:Int = 0;
@@ -42,7 +42,17 @@ class ExpensesAdapter(private val context: Context, private val dataSource: Arra
 //            FormatStyle.LONG, FormatStyle.SHORT)).toString()
 
         holder.dateTime.text = (e.month + e.year)// todo
+
+//        holder.itemView.setOnClickListener {
+////                updateData(e)
+//        }
     }
+
+//    private fun updateData(e:Expense) {
+
+//
+//    }
+
 
     override fun getItemCount() = dataSource.size
 
