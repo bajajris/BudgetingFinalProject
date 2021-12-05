@@ -1,32 +1,25 @@
 package project.st991532818.org.ui.home
 
 import android.app.AlertDialog
-import android.app.Dialog
 import android.os.Build
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.Window
 import android.widget.*
 import androidx.annotation.RequiresApi
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
-import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter
 import com.firebase.ui.firestore.FirestoreRecyclerOptions
+import com.google.firebase.auth.FirebaseAuth
 import project.st991532818.org.R
 import project.st991532818.org.databinding.FragmentHomeBinding
 import project.st991532818.org.model.expenses.Expense
-import project.st991532818.org.adapters.ExpensesAdapter
 import com.google.firebase.firestore.*
-import kotlinx.coroutines.NonDisposableHandle.parent
 import project.st991532818.org.databinding.ListItemExpenseBinding
-import project.st991532818.org.ui.add_activity.AddActivityViewModel
-import project.st991532818.org.ui.add_activity.AddActivityViewModelFactory
 
 
 class HomeFragment : Fragment() {
@@ -60,6 +53,8 @@ class HomeFragment : Fragment() {
 
         //Query
         var query = firebaseFirestore.collection("expenses")
+            .whereEqualTo("userid", FirebaseAuth.getInstance().currentUser?.uid.toString())
+
 
         //Recycler Options
         var options: FirestoreRecyclerOptions<Expense?> = FirestoreRecyclerOptions.Builder<Expense>()

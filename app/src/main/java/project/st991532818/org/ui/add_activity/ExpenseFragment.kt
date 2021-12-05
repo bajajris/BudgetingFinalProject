@@ -128,10 +128,16 @@ class ExpenseFragment : Fragment() {
                 month,
                 year
             )
-            Toast.makeText(context, "Expense Added. Expense list is updated!!", Toast.LENGTH_SHORT)
-//            val action = AddItemFragmentDirections.actionAddItemFragmentToItemListFragment()
+            Toast.makeText(context, "Expense Added. Expense list is updated!!", Toast.LENGTH_SHORT).show()
+            clearSelections()
+        //            val action = AddItemFragmentDirections.actionAddItemFragmentToItemListFragment()
 //            findNavController().navigate(action)
         }
+    }
+
+    private fun clearSelections() {
+        binding.editExpenseAmount.text.clear()
+        binding.editExpenseCategory.setSelection(0)
     }
 
     private fun isEntryValid(): Boolean {
