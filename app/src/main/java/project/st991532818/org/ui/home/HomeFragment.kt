@@ -17,7 +17,7 @@ import com.firebase.ui.firestore.FirestoreRecyclerOptions
 import com.google.firebase.auth.FirebaseAuth
 import project.st991532818.org.R
 import project.st991532818.org.databinding.FragmentHomeBinding
-import project.st991532818.org.model.expenses.Expense
+import project.st991532818.org.models.Expense
 import com.google.firebase.firestore.*
 import project.st991532818.org.databinding.ListItemExpenseBinding
 
@@ -142,22 +142,6 @@ class HomeFragment : Fragment() {
             homeViewModel.deleteExpense(uid)
             dialog.cancel()
         }
-        //builder.setPositiveButton("OK", DialogInterface.OnClickListener(function = x))
-
-//        builder.setPositiveButton(android.R.string.ok) { dialog, which ->
-//            Toast.makeText(context,
-//                android.R.string.ok, Toast.LENGTH_SHORT).show()
-//        }
-//
-//        builder.setNegativeButton(android.R.string.cancel) { _, _ ->
-//            Toast.makeText(context,
-//                android.R.string.cancel, Toast.LENGTH_SHORT).show()
-//        }
-//
-//        builder.setNeutralButton("Maybe") { dialog, which ->
-//            Toast.makeText(context,
-//                "Maybe", Toast.LENGTH_SHORT).show()
-//        }
         dialog.show()
     }
 
@@ -167,28 +151,6 @@ class HomeFragment : Fragment() {
         var category = binding.category
         var dateTime = binding.dateTime
     }
-
-/*
-@RequiresApi(Build.VERSION_CODES.N)
-private fun readData(){
-firebaseFirestore.collection("expenses")
-.get()
-.addOnCompleteListener {
-val result : StringBuffer = StringBuffer()
-if(it.isSuccessful){
-for(document in it.result!!) {
-val amount = document.data.getValue("amount").toString().toDouble()
-val category = document.data.getValue("category").toString()
-val month = document.data.getValue("month").toString()+" "
-val year = document.data.getValue("year").toString().toInt()
-val e = Expense(amount, category, month, year)
-_expensesList.add(e)
-adapter.notifyDataSetChanged()
-}
-}
-}
-}
-*/
 
 
     override fun onStart() {

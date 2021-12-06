@@ -1,10 +1,10 @@
-package project.st991532818.org.model.expenses
+package project.st991532818.org.models
 
-class Budget (amount: Double, month: String, year: Int) {
+class Budget (amount: Double = 0.0, month: String = "", year: Long = 0) {
     var id: String = "";
     var amount: Double = 0.0
     var month: String = ""
-    var year: Int = 0
+    var year: Long = 0
 
     init{
         this.amount = amount

@@ -1,4 +1,4 @@
-package project.st991532818.org.model.expenses
+package project.st991532818.org.models
 
 import java.util.*
 

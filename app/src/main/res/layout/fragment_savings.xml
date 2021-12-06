@@ -9,8 +9,55 @@
     android:background="@color/color_white"
     tools:context=".MainActivity">
 
+    <TextView
+        android:id="@+id/selectTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginTop="15dp"
+        android:text="Select month and year"></TextView>
+
+    <LinearLayout
+        android:id="@+id/spinner_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginTop="10dp"
+        android:layout_below="@+id/selectTextView"
+        android:orientation="horizontal">
+
+        <Spinner
+            android:id="@+id/month_spinner"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_marginRight="8dp"
+            tools:ignore="SpeakableTextPresentCheck,TouchTargetSizeCheck" />
+
+        <Spinner
+            android:id="@+id/year_spinner"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="8dp"
+            android:layout_weight="1" />
+    </LinearLayout>
     <!-- Card view for displaying the -->
     <!-- Pie chart and details of pie chart -->
+
+    <TextView
+        android:id="@+id/budget_message"
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginTop="15dp"
+        android:text="No budget exists for current month and year"
+        android:layout_below="@id/spinner_layout"
+        android:visibility="gone"/>
+
+
     <androidx.cardview.widget.CardView
         android:id="@+id/cardViewGraph"
         android:layout_width="match_parent"
@@ -19,6 +66,7 @@
         android:layout_marginRight="20dp"
         android:layout_marginTop="15dp"
         android:elevation="10dp"
+        android:layout_below="@id/spinner_layout"
         app:cardCornerRadius="10dp">
 
 
@@ -65,13 +113,13 @@
                     <View
                         android:layout_width="15dp"
                         android:layout_height="match_parent"
-                        android:background="@color/R"/>
+                        android:background="@color/Automotive"/>
 
                     <!--Text view to display R -->
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="R"
+                        android:text="Automotive"
                         android:paddingLeft="10dp"/>
 
                 </LinearLayout>
@@ -87,13 +135,13 @@
                     <View
                         android:layout_width="15dp"
                         android:layout_height="match_parent"
-                        android:background="@color/Python"/>
+                        android:background="@color/Education"/>
 
                     <!--Text view to display python text -->
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Python"
+                        android:text="Education"
                         android:paddingLeft="10dp"/>
 
                 </LinearLayout>
@@ -109,13 +157,13 @@
                     <View
                         android:layout_width="15dp"
                         android:layout_height="match_parent"
-                        android:background="@color/CPP"/>
+                        android:background="@color/Grocery"/>
 
                     <!--Text view to display C++ text -->
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="C++"
+                        android:text="Grocery"
                         android:paddingLeft="10dp"/>
 
                 </LinearLayout>
@@ -131,13 +179,34 @@
                     <View
                         android:layout_width="15dp"
                         android:layout_height="match_parent"
-                        android:background="@color/Java"/>
+                        android:background="@color/Hospital"/>
 
                     <!--Text view to display Java text -->
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Java"
+                        android:text="Hospital"
+                        android:paddingLeft="10dp"/>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="15dp"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginTop="5dp">
+
+                    <!--View to display the blue color icon-->
+                    <View
+                        android:layout_width="15dp"
+                        android:layout_height="match_parent"
+                        android:background="@color/Entertainment"/>
+
+                    <!--Text view to display Java text -->
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Entertainment"
                         android:paddingLeft="10dp"/>
 
                 </LinearLayout>
@@ -153,7 +222,7 @@
     <!-- Use of programming languages -->
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
-        android:layout_height="260dp"
+        android:layout_height="290dp"
         android:layout_below="@+id/cardViewGraph"
         android:layout_marginLeft="20dp"
         android:layout_marginRight="20dp"
@@ -161,7 +230,7 @@
         android:layout_marginBottom="20dp"
         android:elevation="10dp"
         app:cardCornerRadius="10dp"
-        android:id="@+id/details">
+        android:id="@+id/cardViewDetails">
 
         <!--Relative layout to display -->
         <!-- use of programming languages -->
@@ -175,7 +244,7 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Use of Programming Languages(In Percentage):"
+                android:text="Savings:"
                 android:textSize="23sp"
                 android:textStyle="bold"
                 android:layout_marginLeft="25dp"
@@ -203,7 +272,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:fontFamily="sans-serif-light"
-                    android:text="R"
+                    android:text="Automotive"
                     android:textSize="18sp"/>
 
                 <!--Text view to display the -->
@@ -213,7 +282,7 @@
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
                     android:text="0"
-                    android:id="@+id/tvR"
+                    android:id="@+id/tvAutomotive"
                     android:textAlignment="textEnd"
                     android:textSize="18sp"
                     android:textColor="@color/color_one"
@@ -242,7 +311,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:fontFamily="sans-serif-light"
-                    android:text="Python"
+                    android:text="Education"
                     android:textSize="18sp"/>
 
                 <!--Text view to display the percentage -->
@@ -253,7 +322,7 @@
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
                     android:text="0"
-                    android:id="@+id/tvPython"
+                    android:id="@+id/tvEducation"
                     android:textAlignment="textEnd"
                     android:textSize="18sp"
                     android:textColor="@color/color_one"
@@ -281,7 +350,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:fontFamily="sans-serif-light"
-                    android:text="C++"
+                    android:text="Grocery"
                     android:textSize="18sp"/>
 
                 <!--Text view to display the percentage -->
@@ -291,7 +360,7 @@
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
                     android:text="0"
-                    android:id="@+id/tvCPP"
+                    android:id="@+id/tvGrocery"
                     android:textAlignment="textEnd"
                     android:textSize="18sp"
                     android:textColor="@color/color_one"
@@ -319,7 +388,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:fontFamily="sans-serif-light"
-                    android:text="Java"
+                    android:text="Hospital"
                     android:textSize="18sp"/>
 
                 <!--Text view to display the percentage -->
@@ -329,7 +398,46 @@
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
                     android:text="0"
-                    android:id="@+id/tvJava"
+                    android:id="@+id/tvHospital"
+                    android:textAlignment="textEnd"
+                    android:textSize="18sp"
+                    android:textColor="@color/color_one"
+                    android:textStyle="bold"
+                    android:fontFamily="sans-serif-light"
+                    android:layout_alignParentRight="true"/>
+
+            </RelativeLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/color_two"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp" />
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="25dp"
+                android:layout_marginLeft="25dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="sans-serif-light"
+                    android:text="Entertainment"
+                    android:textSize="18sp"/>
+
+                <!--Text view to display the percentage -->
+                <!-- of programming language used. -->
+                <!-- For now default set to 0-->
+                <TextView
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:text="0"
+                    android:id="@+id/tvEntertainment"
                     android:textAlignment="textEnd"
                     android:textSize="18sp"
                     android:textColor="@color/color_one"

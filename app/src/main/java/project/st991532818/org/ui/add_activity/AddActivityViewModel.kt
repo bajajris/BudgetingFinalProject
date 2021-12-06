@@ -3,8 +3,7 @@ package project.st991532818.org.ui.add_activity
 import android.util.Log
 import androidx.lifecycle.*
 import kotlinx.coroutines.launch
-import project.st991532818.org.model.expenses.Expense
-import androidx.annotation.NonNull
+import project.st991532818.org.models.Expense
 
 import com.google.android.gms.tasks.OnFailureListener
 
@@ -12,7 +11,7 @@ import com.google.android.gms.tasks.OnSuccessListener
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.*
 import kotlinx.coroutines.tasks.await
-import project.st991532818.org.model.expenses.Budget
+import project.st991532818.org.models.Budget
 
 
 class AddActivityViewModel(private val ff: FirebaseFirestore) : ViewModel() {
@@ -26,10 +25,6 @@ class AddActivityViewModel(private val ff: FirebaseFirestore) : ViewModel() {
     var expensesCollection = ff.collection("expenses")
 
     lateinit var docId: String
-
-    fun updateText(t: String){
-        _text.value = t
-    }
 
     fun addNewExpense(expenseAmount: String, expenseCategory: String, month: String, year: String) {
         val newExpense = getNewExpenseEntry(expenseAmount, expenseCategory, month, year)
@@ -133,14 +128,14 @@ class AddActivityViewModel(private val ff: FirebaseFirestore) : ViewModel() {
             amount = expenseAmount.toDouble(),
             category = expenseCategory,
             month = month,
-            year = year.toInt()
+            year = year.toLong()
         )
     }
     private fun getNewBudgetEntry(budgetAmount: String, month: String, year: String): Budget {
         return Budget(
             amount = budgetAmount.toDouble(),
             month = month,
-            year = year.toInt()
+            year = year.toLong()
         )
     }
     fun isExpenseEntryValid(expenseAmount: String, expenseCategory: String): Boolean {

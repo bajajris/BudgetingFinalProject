@@ -27,8 +27,6 @@ class ExpenseFragment : Fragment() {
     }
     private var _binding: FragmentExpenseBinding? = null
 
-    // This property is only valid between onCreateView and
-    // onDestroyView.
     private val binding get() = _binding!!
 
     override fun onCreateView(
@@ -36,15 +34,8 @@ class ExpenseFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-//        addActivityViewModel =
-//            ViewModelProvider(this).get(AddActivityViewModel::class.java)
-
         _binding = FragmentExpenseBinding.inflate(inflater, container, false)
         val root: View = binding.root
-
-
-
-
         return root
     }
 
@@ -113,13 +104,11 @@ class ExpenseFragment : Fragment() {
 //            }
 //        }
         binding.btnAddExpense.setOnClickListener {
-            Log.i("TEST",spinnerMonth.selectedItem.toString())
             addNewItem(spinnerMonth.selectedItem.toString(), spinnerYear.selectedItem.toString())
         }
 
     }
     // onViewCreated Ends here
-
     private fun addNewItem(month: String, year: String) {
         if (isEntryValid()) {
             addActivityViewModel.addNewExpense(
@@ -130,23 +119,20 @@ class ExpenseFragment : Fragment() {
             )
             Toast.makeText(context, "Expense Added. Expense list is updated!!", Toast.LENGTH_SHORT).show()
             clearSelections()
-        //            val action = AddItemFragmentDirections.actionAddItemFragmentToItemListFragment()
-//            findNavController().navigate(action)
+        //  val action = AddItemFragmentDirections.actionAddItemFragmentToItemListFragment()
+//          findNavController().navigate(action)
         }
     }
-
     private fun clearSelections() {
         binding.editExpenseAmount.text.clear()
         binding.editExpenseCategory.setSelection(0)
     }
-
     private fun isEntryValid(): Boolean {
         return addActivityViewModel.isExpenseEntryValid(
             binding.editExpenseAmount.text.toString(),
             binding.editExpenseCategory.selectedItem.toString()
         )
     }
-
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
