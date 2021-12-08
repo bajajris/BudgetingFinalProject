@@ -11,16 +11,23 @@ import project.st991532818.org.databinding.FragmentAddactivityBinding
 
 import com.google.android.material.tabs.TabLayoutMediator
 
-
+/**
+ * Name: Rishabh Bajaj
+ * Student Id: 991532818
+ * Date: 2021-11-22
+ * Description: Add Activity fragment that displays two tabs Budgets and Expenses
+ */
 class AddActivityFragment : Fragment() {
     private val myArray = arrayOf(
         "Budget",
         "Expense"
     )
 
+    // add activity view model
     private val addActivityViewModel: AddActivityViewModel by activityViewModels {
         AddActivityViewModelFactory(
-            FirebaseFirestore.getInstance())
+            FirebaseFirestore.getInstance()
+        )
     }
     private var _binding: FragmentAddactivityBinding? = null
 
@@ -42,9 +49,11 @@ class AddActivityFragment : Fragment() {
         val viewPager = binding.viewPager
         val tabLayout = binding.tabLayout
 
+        // view pager adapter for tabbed layout
         val adapter = ViewPagerAdapter(parentFragmentManager, lifecycle)
         viewPager.adapter = adapter
 
+        //switching tabs
         TabLayoutMediator(tabLayout, viewPager) { tab, position ->
             tab.text = myArray[position]
         }.attach()

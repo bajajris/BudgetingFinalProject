@@ -1,13 +1,15 @@
 package project.st991532818.org
 
+import android.app.AlertDialog
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.util.AttributeSet
+import android.view.LayoutInflater
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
-import android.widget.TextView
+import android.widget.*
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.navigation.NavigationView
 import androidx.navigation.findNavController
@@ -81,11 +83,37 @@ class MainActivity : AppCompatActivity() {
     }
 
     fun showAbout(){
+        val builder = AlertDialog.Builder(this)
 
+        var mView: View = LayoutInflater.from(this).inflate(R.layout.about_dialog, null)
+        builder.setTitle("About")
+
+        builder.setView(mView)
+
+
+        builder.setPositiveButton(android.R.string.ok) { dialog, which ->
+            dialog.cancel()
+        }
+        var dialog = builder.create()
+
+        dialog.show()
     }
 
     fun showHelp(){
+        val builder = AlertDialog.Builder(this)
 
+        var mView: View = LayoutInflater.from(this).inflate(R.layout.help_dialog, null)
+        builder.setTitle("Help")
+
+        builder.setView(mView)
+
+
+        builder.setPositiveButton(android.R.string.ok) { dialog, which ->
+            dialog.cancel()
+        }
+        var dialog = builder.create()
+
+        dialog.show()
     }
 
     fun logout(){

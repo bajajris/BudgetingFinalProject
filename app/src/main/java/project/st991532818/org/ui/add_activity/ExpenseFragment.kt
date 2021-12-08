@@ -121,6 +121,8 @@ class ExpenseFragment : Fragment() {
             clearSelections()
         //  val action = AddItemFragmentDirections.actionAddItemFragmentToItemListFragment()
 //          findNavController().navigate(action)
+        }else{
+            Toast.makeText(context, "Invalid values", Toast.LENGTH_SHORT).show()
         }
     }
     private fun clearSelections() {
