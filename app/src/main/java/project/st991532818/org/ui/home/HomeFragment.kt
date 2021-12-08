@@ -21,7 +21,12 @@ import project.st991532818.org.models.Expense
 import com.google.firebase.firestore.*
 import project.st991532818.org.databinding.ListItemExpenseBinding
 
-
+/**
+ * Name: 1. Raj Rajput, 2. Rishabh Bajaj
+ * Student Id:
+ * Date: 2021-11-28
+ * Description: Home fragment to display expenses for the user and update /delete them
+ */
 class HomeFragment : Fragment() {
 
     private lateinit var firebaseFirestore : FirebaseFirestore

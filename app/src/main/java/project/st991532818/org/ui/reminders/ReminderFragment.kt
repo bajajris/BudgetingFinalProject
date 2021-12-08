@@ -33,7 +33,12 @@ import project.st991532818.org.ui.home.HomeFragment
 import project.st991532818.org.ui.home.HomeViewModel
 import project.st991532818.org.ui.home.HomeViewModelFactory
 import java.util.*
-
+/**
+ * Name: Raj Rajput
+ * Student Id:
+ * Date: 2021-12-7
+ * Description: Reminder fragment to add reminders
+ */
 class ReminderFragment : Fragment() {
     // firebase adapter
     private lateinit var firebaseFirestore : FirebaseFirestore
