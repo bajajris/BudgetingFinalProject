@@ -3,31 +3,28 @@ package project.st991532818.org.models
 import java.util.*
 /**
  * Name: Raj
- * Student Id:
+ * Student Id: 991550770
  * Date: 2021-11-20
  * Description: Budget model class
  */
-class PaymentReminder(/*name: String,*/
+class PaymentReminder(
                       date: String = "",
                       isActive: Boolean = false,
                       repeat: Boolean = false,
-                      amount: String = "",
+                      amount: Double = 0.0,
                       payee: String = "",
                       category: String = "",
                         note: String = "") {
-    //var name: String = ""
     var uid: String = "";
     var date: String = Date().toString()
     var category: String = ""
     var isActive: Boolean = false
-    //todo implement a repeat frequency
     var repeat: Boolean = false
-    var amount: String = "0.0"
+    var amount: Double = 0.0
     var payee: String = ""
     var note: String = ""
 
     init{
-        //this.name = name
         this.date = date
         this.isActive = isActive
         this.repeat = repeat

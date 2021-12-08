@@ -20,14 +20,14 @@ class ReminderViewModel(private val ff: FirebaseFirestore) : ViewModel() {
     }
     val text: LiveData<String> = _text
 
-    fun addNewReminder(date: String, category: String, payee: String, note: String, amount: String) {
+    fun addNewReminder(date: String, category: String, payee: String, note: String, amount: Double) {
 
         val newReminder = getNewReminder(date, category, payee, note, amount)
         insertReminder(newReminder)
     }
 
-    fun isReminderEntryValid(date: Date, payee: String, category: String, amount:Double): Boolean {
-        if (date.toString().isBlank() || payee.isBlank() || category.isBlank() || amount > 0) {
+    fun isReminderEntryValid(date: Date, payee: String, category: String, amount:String): Boolean {
+        if (date.toString().isBlank() || payee.isBlank() || category.isBlank() || amount.isBlank()) {
             return false
         }
         return true
@@ -62,7 +62,7 @@ class ReminderViewModel(private val ff: FirebaseFirestore) : ViewModel() {
         }
     }
 
-    private fun getNewReminder(date: String, category: String, payee: String, note: String, amount: String): PaymentReminder {
+    private fun getNewReminder(date: String, category: String, payee: String, note: String, amount: Double): PaymentReminder {
         return PaymentReminder(
             date = date,
             category = category,
@@ -72,6 +72,27 @@ class ReminderViewModel(private val ff: FirebaseFirestore) : ViewModel() {
             repeat = true,
             amount = amount
         )
+    }
+
+    fun updateReminder(uid: String, date: String, payee: String, category: String, amount: String, notes: String) {
+        viewModelScope.launch {
+            reminderCollection.document(
+                uid
+            ).update("amount", amount.toDouble(), "category", category, "payee", payee
+            , "date", date, "notes", notes).addOnSuccessListener {
+                Log.d("TAG", "Document Updated")
+            }
+        }
+    }
+
+    fun deleteReminder(uid: String) {
+        viewModelScope.launch {
+            reminderCollection.document(
+                uid
+            ).delete().addOnSuccessListener {
+                Log.d("TAG", "Document Updated")
+            }
+        }
     }
 }
 

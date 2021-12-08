@@ -1,5 +1,6 @@
 package project.st991532818.org.ui.reminders
 
+import android.app.AlertDialog
 import android.app.DatePickerDialog
 import android.app.TimePickerDialog
 import android.app.TimePickerDialog.OnTimeSetListener
@@ -9,10 +10,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.DatePicker
-import android.widget.TextView
-import android.widget.TimePicker
-import android.widget.Toast
+import android.widget.*
 import androidx.annotation.RequiresApi
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
@@ -24,6 +22,7 @@ import com.firebase.ui.firestore.FirestoreRecyclerAdapter
 import com.firebase.ui.firestore.FirestoreRecyclerOptions
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
+import project.st991532818.org.R
 import project.st991532818.org.databinding.FragmentHomeBinding
 import project.st991532818.org.databinding.FragmentReminderBinding
 import project.st991532818.org.databinding.ListItemExpenseBinding
@@ -95,7 +94,7 @@ class ReminderFragment : Fragment() {
                     model: PaymentReminder
                 ) {
                     holder.category.text = model.category
-                    holder.amount.text = model.amount
+                    holder.amount.text = model.amount.toString()
                     holder.payee.text = model.payee
                     holder.note.text = model.note
                     var col:Int = 0;
@@ -103,10 +102,10 @@ class ReminderFragment : Fragment() {
 
                     holder.expenseTypeLabel.background = context?.getDrawable(col)
                     holder.dateTime.text = model.date//(model.month + " " + model.year)
-//                    holder.itemView.setOnClickListener{
-//                        var uid = snapshots.getSnapshot(position).id;
-//                        updateData(uid, getItem(position))
-//                    }
+                    holder.itemView.setOnClickListener{
+                        var uid = snapshots.getSnapshot(position).id;
+                        updateData(uid, getItem(position))
+                    }
                 }
 
                 override fun onDataChanged() {
@@ -135,11 +134,43 @@ class ReminderFragment : Fragment() {
         return root
     }
 
+    private fun updateData(uid: String, item: PaymentReminder) {
+        val builder = AlertDialog.Builder(context)
+
+        var mView: View = LayoutInflater.from(context).inflate(R.layout.update_dialog_reminder, null)
+        builder.setTitle("Update Reminder")
+
+        builder.setView(mView)
+
+        var dialog = builder.create()
+
+        var dateUpdate = mView.findViewById<TextView>(R.id.editTextDateUpdate)
+        dateUpdate.text = item.date
+        var payeeUpdate = mView.findViewById<TextView>(R.id.editTextPayeeUpdate)
+        payeeUpdate.text = item.payee
+        var categoryUpdate = mView.findViewById<TextView>(R.id.editTextCategoryUpdate)
+        categoryUpdate.text = item.category
+        var amountUpdate = mView.findViewById<TextView>(R.id.editTextAmountUpdate)
+        amountUpdate.text = item.amount.toString()
+        var notesUpdate = mView.findViewById<TextView>(R.id.editTextNotesUpdate)
+        notesUpdate.text = item.note
+
+        mView.findViewById<Button>(R.id.updateButton).setOnClickListener{
+            reminderViewModel.updateReminder(uid, dateUpdate.text.toString(), payeeUpdate.text.toString(), categoryUpdate.text.toString(), amountUpdate.text.toString(), notesUpdate.text.toString() )
+            dialog.cancel()
+        }
+        mView.findViewById<Button>(R.id.deleteButton).setOnClickListener{
+            reminderViewModel.deleteReminder(uid)
+            dialog.cancel()
+        }
+        dialog.show()
+    }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
         binding.addReminderButton.setOnClickListener{
-            addNewReminder(binding.editTextDate.text.toString(), binding.editTextCategory.text.toString(), binding.editTextPayee.text.toString(), binding.editTextNotes.text.toString(), binding.editTextAmount.text.toString())
+            addNewReminder(binding.editTextDate.text.toString(), binding.editTextCategory.text.toString(), binding.editTextPayee.text.toString(), binding.editTextNotes.text.toString(), binding.editTextAmount.text.toString().toDouble())
             binding.editTextDate.setText("")
             binding.editTextCategory.setText("")
             binding.editTextPayee.setText("")
@@ -176,7 +207,7 @@ class ReminderFragment : Fragment() {
         }
     }
 
-    private fun addNewReminder(date: String, category: String, payee: String,  notes: String, amount: String) {
+    private fun addNewReminder(date: String, category: String, payee: String,  notes: String, amount: Double) {
         reminderViewModel.addNewReminder(date,category,payee,notes,amount)
     }
 
