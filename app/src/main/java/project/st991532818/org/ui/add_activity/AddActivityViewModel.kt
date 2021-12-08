@@ -1,6 +1,7 @@
 package project.st991532818.org.ui.add_activity
 
 import android.util.Log
+import android.widget.Toast
 import androidx.lifecycle.*
 import kotlinx.coroutines.launch
 import project.st991532818.org.models.Expense
@@ -14,6 +15,12 @@ import kotlinx.coroutines.tasks.await
 import project.st991532818.org.models.Budget
 
 
+/**
+ * Name: Rishabh Bajaj
+ * Student Id: 991532818
+ * Date: 2021-11-22
+ * Description: Add Activity view model to do database operations on firestore collections
+ */
 class AddActivityViewModel(private val ff: FirebaseFirestore) : ViewModel() {
 
     private val _text = MutableLiveData<String>().apply {
@@ -26,21 +33,26 @@ class AddActivityViewModel(private val ff: FirebaseFirestore) : ViewModel() {
 
     lateinit var docId: String
 
+    //method to execute insert new expense into firestore
     fun addNewExpense(expenseAmount: String, expenseCategory: String, month: String, year: String) {
         val newExpense = getNewExpenseEntry(expenseAmount, expenseCategory, month, year)
         insertExpense(newExpense)
     }
+    //method to execute insert new budget into firestore
 
     fun addNewBudget(budgetAmount: String, month: String, year: String) {
         val newBudget = getNewBudgetEntry(budgetAmount, month, year)
         insertBudget(newBudget)
     }
 
+    //method to check if budget exists in firestore
+
     fun budgetExists(month: String, year: String){
         viewModelScope.launch {
             budgetExistsLaunch(month,year)
         }
     }
+    //method to check if budget exists in firestore
 
     private suspend fun budgetExistsLaunch(month: String, year: String){
         var query = budgetCollection
@@ -58,6 +70,7 @@ class AddActivityViewModel(private val ff: FirebaseFirestore) : ViewModel() {
             budgetExists = false
         }
     }
+    //method to create a new expense and insert into firestore add display success
 
     private fun insertExpense(expense: Expense) {
         viewModelScope.launch {
@@ -85,9 +98,13 @@ class AddActivityViewModel(private val ff: FirebaseFirestore) : ViewModel() {
                 })
         }
     }
+
+    //method to create a new budget and insert into firestore add display success
+    // if budget exists update it
     private fun insertBudget(budget: Budget) {
         if(budgetExists){
             viewModelScope.launch {
+                //updating document amount
                 budgetCollection.document(
                    docId
                 ).update("amount", budget.amount).addOnSuccessListener {
@@ -123,6 +140,7 @@ class AddActivityViewModel(private val ff: FirebaseFirestore) : ViewModel() {
 
     }
 
+    // get expense created object
     private fun getNewExpenseEntry(expenseAmount: String, expenseCategory: String, month: String, year: String): Expense {
         return Expense(
             amount = expenseAmount.toDouble(),
@@ -131,6 +149,8 @@ class AddActivityViewModel(private val ff: FirebaseFirestore) : ViewModel() {
             year = year.toLong()
         )
     }
+    // get budget created object
+
     private fun getNewBudgetEntry(budgetAmount: String, month: String, year: String): Budget {
         return Budget(
             amount = budgetAmount.toDouble(),
@@ -138,6 +158,9 @@ class AddActivityViewModel(private val ff: FirebaseFirestore) : ViewModel() {
             year = year.toLong()
         )
     }
+
+    // check if expense entry created object
+
     fun isExpenseEntryValid(expenseAmount: String, expenseCategory: String): Boolean {
         if (expenseAmount.isBlank() || expenseCategory.isBlank()) {
             return false

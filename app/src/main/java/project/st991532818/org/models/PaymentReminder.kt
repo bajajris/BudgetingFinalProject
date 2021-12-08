@@ -1,7 +1,12 @@
 package project.st991532818.org.models
 
 import java.util.*
-
+/**
+ * Name: Raj
+ * Student Id:
+ * Date: 2021-11-20
+ * Description: Budget model class
+ */
 class PaymentReminder(/*name: String,*/
                       date: String = "",
                       isActive: Boolean = false,

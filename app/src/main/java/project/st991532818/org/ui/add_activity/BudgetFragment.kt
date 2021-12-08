@@ -136,6 +136,8 @@ class BudgetFragment : Fragment() {
             )
             Toast.makeText(context, "Budget Added. Budget list is updated!!", Toast.LENGTH_SHORT).show()
             clearSelections()
+        }else{
+            Toast.makeText(context, "Invalid values", Toast.LENGTH_SHORT).show()
         }
     }
 
