@@ -27,7 +27,7 @@ class HomeFragment : Fragment() {
     private lateinit var firebaseFirestore : FirebaseFirestore
     private lateinit var mFirestoreList: RecyclerView
 //    private var _expensesList = ArrayList<Expense>()
-    private lateinit var adapter : FirestoreRecyclerAdapter<*, *>
+    private lateinit var adapter : FirestoreRecyclerAdapter<Expense?, *>
 
     private val homeViewModel: HomeViewModel by activityViewModels {
      HomeViewModelFactory(
@@ -61,6 +61,8 @@ class HomeFragment : Fragment() {
             .setQuery(query, Expense::class.java)
             .build()
 
+
+
         adapter =
             object : FirestoreRecyclerAdapter<Expense?, ExpenseViewHolder?>(options) {
 
@@ -83,6 +85,14 @@ class HomeFragment : Fragment() {
 
                 }
 
+                override fun onDataChanged() {
+                    super.onDataChanged()
+                    if(itemCount==0){
+                        binding.noExpenseMessage.visibility = View.VISIBLE
+                    }else{
+                        binding.noExpenseMessage.visibility = View.GONE
+                    }
+                }
                 override fun onCreateViewHolder(group: ViewGroup, i: Int): ExpenseViewHolder {
                     // Using a custom layout called R.layout.message for each item, we create a new instance of the viewholder
                     itemListbinding = ListItemExpenseBinding.inflate(LayoutInflater.from(group.context))
@@ -98,6 +108,98 @@ class HomeFragment : Fragment() {
         return root
     }
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        val spinnerMonth = binding.monthSpinner
+        // Create an ArrayAdapter using the string array and a default spinner layout
+        context?.let {
+            ArrayAdapter.createFromResource(
+                it,
+                R.array.months_array,
+                android.R.layout.simple_spinner_item
+            ).also { adapter ->
+                // Specify the layout to use when the list of choices appears
+                adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+                // Apply the adapter to the spinner
+                spinnerMonth.adapter = adapter
+            }
+        }
+        val spinnerYear = binding.yearSpinner
+        // Create an ArrayAdapter using the string array and a default spinner layout
+        context?.let {
+            ArrayAdapter.createFromResource(
+                it,
+                R.array.year_array,
+                android.R.layout.simple_spinner_item
+            ).also { adapter ->
+                // Specify the layout to use when the list of choices appears
+                adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+                // Apply the adapter to the spinner
+                spinnerYear.adapter = adapter
+            }
+        }
+
+        spinnerMonth.onItemSelectedListener = object :
+            AdapterView.OnItemSelectedListener {
+            override fun onItemSelected(
+                parent: AdapterView<*>?,
+                view: View?,
+                position: Int,
+                id: Long
+            ) {
+                if (parent != null) {
+                    //Query
+                    var query = firebaseFirestore.collection("expenses")
+                        .whereEqualTo("userid", FirebaseAuth.getInstance().currentUser?.uid.toString())
+                        .whereEqualTo("month", spinnerMonth.selectedItem.toString())
+                        .whereEqualTo("year", spinnerYear.selectedItem.toString().toInt())
+
+
+                    //Recycler Options
+                    var options: FirestoreRecyclerOptions<Expense?> = FirestoreRecyclerOptions.Builder<Expense>()
+                        .setQuery(query, Expense::class.java)
+                        .build()
+
+                    adapter.updateOptions(options)
+                }
+            }
+
+            override fun onNothingSelected(p0: AdapterView<*>?) {
+//                TODO("Not yet implemented")
+            }
+        }
+
+        spinnerYear.onItemSelectedListener = object :
+            AdapterView.OnItemSelectedListener {
+            override fun onItemSelected(
+                parent: AdapterView<*>?,
+                view: View?,
+                position: Int,
+                id: Long
+            ) {
+                if (parent != null) {
+                    //Query
+                    var query = firebaseFirestore.collection("expenses")
+                        .whereEqualTo("userid", FirebaseAuth.getInstance().currentUser?.uid.toString())
+                        .whereEqualTo("month", spinnerMonth.selectedItem.toString())
+                        .whereEqualTo("year", spinnerYear.selectedItem.toString().toInt())
+
+
+                    //Recycler Options
+                    var options: FirestoreRecyclerOptions<Expense?> = FirestoreRecyclerOptions.Builder<Expense>()
+                        .setQuery(query, Expense::class.java)
+                        .build()
+
+                    adapter.updateOptions(options)
+                }
+            }
+
+            override fun onNothingSelected(p0: AdapterView<*>?) {
+                TODO("Not yet implemented")
+            }
+        }
+
+    }
     private fun updateData(uid: String, item: Expense) {
         val builder = AlertDialog.Builder(context)
 

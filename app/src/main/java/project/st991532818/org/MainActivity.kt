@@ -1,9 +1,11 @@
 package project.st991532818.org
 
 import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.util.AttributeSet
 import android.view.Menu
+import android.view.MenuItem
 import android.view.View
 import android.widget.TextView
 import com.google.android.material.snackbar.Snackbar
@@ -57,6 +59,40 @@ class MainActivity : AppCompatActivity() {
         // Inflate the menu; this adds items to the action bar if it is present.
         menuInflater.inflate(R.menu.main, menu)
         return true
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        // Handle item selection
+        return when (item.itemId) {
+            R.id.action_about -> {
+                showAbout()
+                true
+            }
+            R.id.action_help -> {
+                showHelp()
+                true
+            }
+            R.id.action_logout -> {
+                logout()
+                true
+            }
+            else -> super.onOptionsItemSelected(item)
+        }
+    }
+
+    fun showAbout(){
+
+    }
+
+    fun showHelp(){
+
+    }
+
+    fun logout(){
+        FirebaseAuth.getInstance().signOut()
+        val intent = Intent(this, LoginActivity::class.java)
+        startActivity(intent)
+        finish()
     }
 
     override fun onSupportNavigateUp(): Boolean {
