@@ -18,9 +18,15 @@ import project.st991532818.org.R
 import project.st991532818.org.databinding.FragmentAddactivityBinding
 import project.st991532818.org.databinding.FragmentBudgetBinding
 import project.st991532818.org.databinding.FragmentExpenseBinding
-
+/**
+ * Name: Rishabh Bajaj
+ * Student Id: 991532818
+ * Date: 2021-11-25
+ * Description: Expense fragment to display add expense by month and year and category
+ */
 class ExpenseFragment : Fragment() {
 
+    // add activity view model
     private val addActivityViewModel: AddActivityViewModel by activityViewModels {
         AddActivityViewModelFactory(
             FirebaseFirestore.getInstance())
@@ -41,6 +47,7 @@ class ExpenseFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        //spinner to select month
         val spinnerMonth = binding.monthSpinner
         // Create an ArrayAdapter using the string array and a default spinner layout
         context?.let {
@@ -55,6 +62,7 @@ class ExpenseFragment : Fragment() {
                 spinnerMonth.adapter = adapter
             }
         }
+        //spinner to select year
         val spinnerYear = binding.yearSpinner
         // Create an ArrayAdapter using the string array and a default spinner layout
         context?.let {
@@ -70,6 +78,7 @@ class ExpenseFragment : Fragment() {
             }
         }
 
+        // spinner to select expense category
         val spinnerActivityCategory = binding.editExpenseCategory
         // Create an ArrayAdapter using the string array and a default spinner layout
         context?.let {
@@ -86,29 +95,15 @@ class ExpenseFragment : Fragment() {
             }
         }
 
-
-//        spinnerMonth.onItemSelectedListener = object :
-//            AdapterView.OnItemSelectedListener {
-//            override fun onItemSelected(
-//                parent: AdapterView<*>?,
-//                view: View?,
-//                position: Int,
-//                id: Long
-//            ) {
-//                if (parent != null) {
-//                }
-//            }
-//
-//            override fun onNothingSelected(parent: AdapterView<*>?) {
-//                //TODO("Not yet implemented")
-//            }
-//        }
+        // add expense click listener
         binding.btnAddExpense.setOnClickListener {
             addNewItem(spinnerMonth.selectedItem.toString(), spinnerYear.selectedItem.toString())
         }
 
     }
     // onViewCreated Ends here
+
+    //add new expense and call add method of view model
     private fun addNewItem(month: String, year: String) {
         if (isEntryValid()) {
             addActivityViewModel.addNewExpense(
@@ -119,16 +114,17 @@ class ExpenseFragment : Fragment() {
             )
             Toast.makeText(context, "Expense Added. Expense list is updated!!", Toast.LENGTH_SHORT).show()
             clearSelections()
-        //  val action = AddItemFragmentDirections.actionAddItemFragmentToItemListFragment()
-//          findNavController().navigate(action)
         }else{
             Toast.makeText(context, "Invalid values", Toast.LENGTH_SHORT).show()
         }
     }
+
+    // clear selections when added
     private fun clearSelections() {
         binding.editExpenseAmount.text.clear()
         binding.editExpenseCategory.setSelection(0)
     }
+    //check if entry valid
     private fun isEntryValid(): Boolean {
         return addActivityViewModel.isExpenseEntryValid(
             binding.editExpenseAmount.text.toString(),

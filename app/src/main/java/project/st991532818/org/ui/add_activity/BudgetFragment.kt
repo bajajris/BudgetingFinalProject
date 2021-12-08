@@ -11,15 +11,18 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
-import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProvider
 import com.google.firebase.firestore.FirebaseFirestore
 import project.st991532818.org.R
-import project.st991532818.org.databinding.FragmentAddactivityBinding
 import project.st991532818.org.databinding.FragmentBudgetBinding
-
+/**
+ * Name: Rishabh Bajaj
+ * Student Id: 991532818
+ * Date: 2021-11-25
+ * Description: Budget fragment to display add budget by month and year
+ */
 class BudgetFragment : Fragment() {
 
+    // add activity view model
     private val addActivityViewModel: AddActivityViewModel by activityViewModels {
         AddActivityViewModelFactory(
             FirebaseFirestore.getInstance())
@@ -35,19 +38,15 @@ class BudgetFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-//        addActivityViewModel =
-//            ViewModelProvider(this).get(AddActivityViewModel::class.java)
-
         _binding = FragmentBudgetBinding.inflate(inflater, container, false)
-        val root: View = binding.root
-
-        return root
+        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         val textView: TextView = binding.textBudgetExists
 
+        //spinner to select month
         val spinnerMonth = binding.monthSpinner
         // Create an ArrayAdapter using the string array and a default spinner layout
         context?.let {
@@ -62,6 +61,8 @@ class BudgetFragment : Fragment() {
                 spinnerMonth.adapter = adapter
             }
         }
+
+        //spinner to select year
         val spinnerYear = binding.yearSpinner
         // Create an ArrayAdapter using the string array and a default spinner layout
         context?.let {
@@ -77,6 +78,7 @@ class BudgetFragment : Fragment() {
             }
         }
 
+        // check if budget exists when month is changed
         spinnerMonth.onItemSelectedListener = object :
             AdapterView.OnItemSelectedListener {
             override fun onItemSelected(
@@ -96,6 +98,7 @@ class BudgetFragment : Fragment() {
                 //TODO("Not yet implemented")
             }
         }
+        // check if budget exists when year is changed
 
         spinnerYear.onItemSelectedListener = object :
             AdapterView.OnItemSelectedListener {
@@ -113,20 +116,25 @@ class BudgetFragment : Fragment() {
                 //TODO("Not yet implemented")
             }
         }
+        // add budget click listener
         binding.btnAddBudget.setOnClickListener {
             Log.i("TEST",spinnerMonth.selectedItem.toString())
             addNewItem(spinnerMonth.selectedItem.toString(), spinnerYear.selectedItem.toString())
             checkExistingBudget(spinnerMonth.selectedItem.toString(), spinnerYear.selectedItem.toString())
         }
+        //observe text to display if budget exists
         addActivityViewModel.text.observe(viewLifecycleOwner, {
             textView.text = it
         })
 
     }
     // onViewCreated Ends here
+
+    //check if budget exists for month/year
     private fun checkExistingBudget(month: String, year: String){
         addActivityViewModel.budgetExists(month, year)
     }
+    //add new budget and call add method of view model
     private fun addNewItem(month: String, year: String) {
         if (isEntryValid()) {
             addActivityViewModel.addNewBudget(
@@ -141,10 +149,12 @@ class BudgetFragment : Fragment() {
         }
     }
 
+    // clear selections when added
     private fun clearSelections() {
         binding.editBudgetAmount.text.clear()
     }
 
+    //check if entry valid
     private fun isEntryValid(): Boolean {
         return addActivityViewModel.isBudgetEntryValid(
             binding.editBudgetAmount.text.toString(),

@@ -159,7 +159,7 @@ class AddActivityViewModel(private val ff: FirebaseFirestore) : ViewModel() {
         )
     }
 
-    // check if expense entry created object
+    // check if expense entry valid
 
     fun isExpenseEntryValid(expenseAmount: String, expenseCategory: String): Boolean {
         if (expenseAmount.isBlank() || expenseCategory.isBlank()) {
@@ -168,6 +168,7 @@ class AddActivityViewModel(private val ff: FirebaseFirestore) : ViewModel() {
         return true
     }
 
+    // check if budget entry valid
     fun isBudgetEntryValid(budgetAmount: String): Boolean {
         if (budgetAmount.isBlank()) {
             return false
@@ -175,7 +176,7 @@ class AddActivityViewModel(private val ff: FirebaseFirestore) : ViewModel() {
         return true
     }
 }
-
+// view model factory
 class AddActivityViewModelFactory(private val ff: FirebaseFirestore) : ViewModelProvider.Factory {
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
         if (modelClass.isAssignableFrom(AddActivityViewModel::class.java)) {

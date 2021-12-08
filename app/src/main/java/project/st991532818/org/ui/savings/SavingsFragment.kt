@@ -16,17 +16,11 @@ import project.st991532818.org.databinding.FragmentSavingsBinding
 import org.eazegraph.lib.models.PieModel
 import project.st991532818.org.ui.home.HomeViewModel
 import project.st991532818.org.ui.home.HomeViewModelFactory
-
-
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
-
 /**
- * A simple [Fragment] subclass.
- * Use the [SavingsFragment.newInstance] factory method to
- * create an instance of this fragment.
+ * Name: Rishabh Bajaj
+ * Student Id: 991532818
+ * Date: 2021-12-04
+ * Description: Budget fragment to display add budget by month and year
  */
 class SavingsFragment : Fragment() {
     private var _binding: FragmentSavingsBinding? = null

@@ -7,7 +7,12 @@ import androidx.lifecycle.Lifecycle
 import androidx.viewpager2.adapter.FragmentStateAdapter
 
 private const val NUM_TABS = 2
-
+/**
+ * Name: Rishabh Bajaj
+ * Student Id: 991532818
+ * Date: 2021-11-25
+ * Description: ViewPagerAdapter to navigate to different fragments when tab is clicked
+ */
 public class ViewPagerAdapter(fragmentManager: FragmentManager, lifecycle: Lifecycle) :
     FragmentStateAdapter(fragmentManager, lifecycle) {
 
@@ -16,7 +21,6 @@ public class ViewPagerAdapter(fragmentManager: FragmentManager, lifecycle: Lifec
     }
 
     override fun createFragment(position: Int): Fragment {
-        Log.i("Info", "Here $position")
         when (position) {
             0 -> return BudgetFragment()
             1 -> return ExpenseFragment()

@@ -11,7 +11,12 @@ import kotlinx.coroutines.launch
 import project.st991532818.org.models.PaymentReminder
 import project.st991532818.org.ui.add_activity.AddActivityViewModel
 import java.util.*
-
+/**
+ * Name: Raj Rajput
+ * Student Id:
+ * Date: 2021-12-7
+ * Description: Reminder view model to add and get reminders from firestore and send to Fragment to display
+ */
 class ReminderViewModel(private val ff: FirebaseFirestore) : ViewModel() {
 
     var reminderCollection = ff.collection("reminders")
