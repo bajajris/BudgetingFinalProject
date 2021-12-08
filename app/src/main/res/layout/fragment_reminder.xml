@@ -18,15 +18,28 @@
         android:textAlignment="center"
         android:textSize="20sp" />
 
-    <EditText
-        android:id="@+id/editTextDate"
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:ems="10"
-        android:hint="Date"
-        android:inputType="text"
-        android:minHeight="48dp" />
+        android:orientation="horizontal">
+
+        <EditText
+            android:id="@+id/editTextDate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:ems="10"
+            android:hint="Date"
+            android:inputType="text"
+            android:minHeight="48dp" />
+
+        <Button
+            android:id="@+id/select"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Select" />
+    </LinearLayout>
 
     <EditText
         android:id="@+id/editTextPayee"
@@ -78,11 +91,10 @@
         android:text="Add" />
 
 
-
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/reminderRecyclerview"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/reminderRecyclerview"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
 
 
 </LinearLayout>

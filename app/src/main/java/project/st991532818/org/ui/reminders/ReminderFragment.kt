@@ -1,11 +1,18 @@
 package project.st991532818.org.ui.reminders
 
+import android.app.DatePickerDialog
+import android.app.TimePickerDialog
+import android.app.TimePickerDialog.OnTimeSetListener
 import android.os.Build
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.DatePicker
 import android.widget.TextView
+import android.widget.TimePicker
+import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
@@ -138,6 +145,34 @@ class ReminderFragment : Fragment() {
             binding.editTextPayee.setText("")
             binding.editTextNotes.setText("")
             binding.editTextAmount.setText("")
+        }
+
+        val newCalender = Calendar.getInstance()
+        binding.select.setOnClickListener{
+            val dialog = DatePickerDialog(
+                requireContext(),
+                { view, year, month, dayOfMonth ->
+                    val newDate = Calendar.getInstance()
+                    val newTime = Calendar.getInstance()
+                    val time = TimePickerDialog(requireContext(),
+                        { view, hourOfDay, minute ->
+                            newDate[year, month, dayOfMonth, hourOfDay, minute] = 0
+                            val tem = Calendar.getInstance()
+                            Log.w("TIME", System.currentTimeMillis().toString() + "")
+                            if (newDate.timeInMillis - tem.timeInMillis > 0) binding.editTextDate.setText(
+                                newDate.time.toString()
+                            ) else Toast.makeText(requireContext(), "Invalid time", Toast.LENGTH_SHORT)
+                                .show()
+                        }, newTime[Calendar.HOUR_OF_DAY], newTime[Calendar.MINUTE], true
+                    )
+                    time.show()
+                }, newCalender.get(Calendar.YEAR), newCalender.get(Calendar.MONTH), newCalender.get(
+                    Calendar.DAY_OF_MONTH
+                )
+            )
+
+            dialog.datePicker.minDate = System.currentTimeMillis()
+            dialog.show()
         }
     }
 

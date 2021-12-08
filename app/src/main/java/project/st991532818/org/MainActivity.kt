@@ -17,6 +17,7 @@ import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.app.NotificationManagerCompat
 import com.google.firebase.auth.FirebaseAuth
 import project.st991532818.org.databinding.ActivityMainBinding
 
@@ -27,6 +28,12 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+//        // register notification channel
+//        NotificationHelper.createNotificationChannel(this,
+//            NotificationManagerCompat.IMPORTANCE_DEFAULT, false,
+//            getString(R.string.app_name), "App notification channel.")
+
 
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
