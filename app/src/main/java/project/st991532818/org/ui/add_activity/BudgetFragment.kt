@@ -116,6 +116,7 @@ class BudgetFragment : Fragment() {
         binding.btnAddBudget.setOnClickListener {
             Log.i("TEST",spinnerMonth.selectedItem.toString())
             addNewItem(spinnerMonth.selectedItem.toString(), spinnerYear.selectedItem.toString())
+            checkExistingBudget(spinnerMonth.selectedItem.toString(), spinnerYear.selectedItem.toString())
         }
         addActivityViewModel.text.observe(viewLifecycleOwner, {
             textView.text = it

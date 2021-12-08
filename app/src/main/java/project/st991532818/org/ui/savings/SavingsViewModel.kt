@@ -66,7 +66,7 @@ class SavingsViewModel(private val ff: FirebaseFirestore) : ViewModel() {
             .whereEqualTo("year", year.toInt())
             .whereEqualTo("userid", FirebaseAuth.getInstance().currentUser?.uid.toString())
             .get().await()
-
+        _expenses.value = ArrayList()
         if(query.documents.isNotEmpty()){
 
             for(document in query.documents){
@@ -95,6 +95,7 @@ class SavingsViewModel(private val ff: FirebaseFirestore) : ViewModel() {
     }
 
     suspend fun getBudgetLaunch(value: String) {
+        _budget.value = Budget()
         if(value.isNotEmpty()){
             var query = budgetCollection
                 .document(value)

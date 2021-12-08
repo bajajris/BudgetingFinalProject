@@ -33,9 +33,18 @@ class SavingsFragment : Fragment() {
     private val binding get() = _binding!!
     private val savingsViewModel: SavingsViewModel by activityViewModels {
         SavingsViewModelFactory(
-            FirebaseFirestore.getInstance())
+            FirebaseFirestore.getInstance()
+        )
     }
-
+    var totalExpenses = 0.0;
+    var automotivePrice = 0.0;
+    var hospitalPrice = 0.0;
+    var entertainmentPrice = 0.0;
+    var groceryPrice = 0.0;
+    var educationPrice = 0.0;
+    var totalBudgetPrice = 0.0
+    var amountToCompare = 0.0
+    var savingsAmount = 0.0
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -116,7 +125,11 @@ class SavingsFragment : Fragment() {
                 id: Long
             ) {
                 if (parent != null) {
-                    savingsViewModel.checkBudgetExists(spinnerMonth.selectedItem.toString(), spinnerYear.selectedItem.toString())
+
+                    savingsViewModel.checkBudgetExists(
+                        spinnerMonth.selectedItem.toString(),
+                        spinnerYear.selectedItem.toString()
+                    )
                 }
             }
 
@@ -134,7 +147,12 @@ class SavingsFragment : Fragment() {
                 id: Long
             ) {
                 if (parent != null) {
-                    savingsViewModel.checkBudgetExists(spinnerMonth.selectedItem.toString(), spinnerYear.selectedItem.toString())
+
+
+                    savingsViewModel.checkBudgetExists(
+                        spinnerMonth.selectedItem.toString(),
+                        spinnerYear.selectedItem.toString()
+                    )
                 }
             }
 
@@ -144,37 +162,155 @@ class SavingsFragment : Fragment() {
         }
 
         savingsViewModel.budgetId.observe(viewLifecycleOwner, {
-            if(it.isNullOrEmpty()){
-                savingsViewModel.getAllExpenses(spinnerMonth.selectedItem.toString(), spinnerYear.selectedItem.toString())
+            if (it.isNullOrEmpty()) {
                 savingsViewModel.getBudget(savingsViewModel.budgetId.value)
+                savingsViewModel.getAllExpenses(
+                    spinnerMonth.selectedItem.toString(),
+                    spinnerYear.selectedItem.toString()
+                )
                 binding.cardViewGraph.visibility = View.GONE
-                binding.cardViewDetails.visibility = View.GONE
-                binding.budgetMessage.visibility = View.VISIBLE
-            }else{
-
-               savingsViewModel.getAllExpenses(spinnerMonth.selectedItem.toString(), spinnerYear.selectedItem.toString())
-               savingsViewModel.getBudget(savingsViewModel.budgetId.value)
+//                binding.cardViewDetails.visibility = View.VISIBLE
+//                binding.budgetMessage.visibility = View.VISIBLE
+            } else {
+                savingsViewModel.getBudget(savingsViewModel.budgetId.value)
+                savingsViewModel.getAllExpenses(
+                    spinnerMonth.selectedItem.toString(),
+                    spinnerYear.selectedItem.toString()
+                )
                 binding.cardViewGraph.visibility = View.VISIBLE
-                binding.cardViewDetails.visibility = View.VISIBLE
-                binding.budgetMessage.visibility = View.GONE
+//                binding.cardViewDetails.visibility = View.VISIBLE
+//                binding.budgetMessage.visibility = View.VISIBLE
             }
         })
 
         savingsViewModel.expenses.observe(viewLifecycleOwner, {
-            var totalPrice = 0.0
-            for(expense in it){
-                totalPrice+=expense.amount
+            totalExpenses = 0.0
+            educationPrice = 0.0
+            hospitalPrice = 0.0
+            automotivePrice = 0.0
+            groceryPrice = 0.0
+            entertainmentPrice = 0.0
+            amountToCompare = 0.0
+            savingsAmount = 0.0
+            binding.piechart.clearChart()
+            for (expense in it) {
+                totalExpenses += expense.amount
+                when (expense.category) {
+                    "Automotive" -> {
+                        automotivePrice += expense.amount
+                    }
+                    "Education" -> {
+                        educationPrice += expense.amount
+                    }
+                    "Grocery" -> {
+                        groceryPrice += expense.amount
+                    }
+                    "Hospital" -> {
+                        hospitalPrice += expense.amount
+                    }
+                    "Entertainment" -> {
+                        entertainmentPrice += expense.amount
+                    }
+                }
+            }
+            binding.tvAutomotive.text = "$ $automotivePrice"
+            binding.tvGrocery.text = "$ $groceryPrice"
+            binding.tvEntertainment.text = "$ $entertainmentPrice"
+            binding.tvEducation.text = "$ $educationPrice"
+            binding.tvHospital.text = "$ $hospitalPrice"
+
+
+            if (totalExpenses > totalBudgetPrice && totalBudgetPrice > 0) {
+                binding.budgetMessage.text =
+                    "Budget Not added for month and year\nExpense Analysis with Respect to total expenses"
+                amountToCompare = totalExpenses
+            } else if (totalExpenses <= totalBudgetPrice && totalBudgetPrice > 0) {
+                binding.budgetMessage.text = "Expense Analysis with Respect to total budget"
+                amountToCompare = totalBudgetPrice
+                savingsAmount = totalBudgetPrice - totalExpenses
+
+            }
+            binding.tvSavings.text = "$ $savingsAmount"
+
+            var entertainmentPieData =
+                (entertainmentPrice / amountToCompare * 100).toFloat()
+            var automotivePieData =
+                (automotivePrice / amountToCompare * 100).toFloat()
+            var hospitalPieData =
+                (hospitalPrice / amountToCompare * 100).toFloat()
+            var groceryPieData =
+                (groceryPrice / amountToCompare * 100).toFloat()
+            var educationPieData =
+                (educationPrice / amountToCompare * 100).toFloat()
+            var savingsPieData =
+                (savingsAmount / amountToCompare * 100).toFloat()
+
+            if(entertainmentPieData>0){
+                binding.piechart.addPieSlice(
+                    PieModel(
+                        "Entertainment",
+                        entertainmentPieData,
+                        Color.parseColor("#C930E3")
+                    )
+                )
+            }
+            if(hospitalPieData>0) {
+                binding.piechart.addPieSlice(
+                    PieModel(
+                        "Hospital",
+                        hospitalPieData,
+                        Color.parseColor("#29B6F6")
+                    )
+                )
+            }
+
+            if(educationPieData>0) {
+                binding.piechart.addPieSlice(
+                    PieModel(
+                        "Education",
+                        educationPieData,
+                        Color.parseColor("#66BB6A")
+                    )
+                )
+            }
+            if(groceryPieData>0) {
+                binding.piechart.addPieSlice(
+                    PieModel(
+                        "Grocery",
+                        groceryPieData,
+                        Color.parseColor("#EF5350")
+                    )
+                )
+            }
+            if(automotivePieData>0) {
+                binding.piechart.addPieSlice(
+                    PieModel(
+                        "Automotive",
+                        automotivePieData,
+                        Color.parseColor("#FFA726")
+                    )
+                )
+            }
+            if(savingsPieData>0) {
+                binding.piechart.addPieSlice(
+                    PieModel(
+                        "Savings",
+                        savingsPieData,
+                        Color.parseColor("#03395C")
+                    )
+                )
             }
         })
 
         savingsViewModel.budget.observe(viewLifecycleOwner, {
-
+            totalBudgetPrice = 0.0
+            totalBudgetPrice = it.amount
         })
 
 
-
     }
-        override fun onDestroyView() {
+
+    override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
     }
