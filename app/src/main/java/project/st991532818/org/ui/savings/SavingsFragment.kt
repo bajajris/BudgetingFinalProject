@@ -16,11 +16,12 @@ import project.st991532818.org.databinding.FragmentSavingsBinding
 import org.eazegraph.lib.models.PieModel
 import project.st991532818.org.ui.home.HomeViewModel
 import project.st991532818.org.ui.home.HomeViewModelFactory
+
 /**
  * Name: Rishabh Bajaj
  * Student Id: 991532818
  * Date: 2021-12-04
- * Description: Budget fragment to display add budget by month and year
+ * Description: Savings fragment to display add expenses and analyze savings
  */
 class SavingsFragment : Fragment() {
     private var _binding: FragmentSavingsBinding? = null
@@ -46,37 +47,6 @@ class SavingsFragment : Fragment() {
 
         _binding = FragmentSavingsBinding.inflate(inflater, container, false)
         val root: View = binding.root
-
-//        binding.tvR.text = Integer.toString(25)
-//        binding.tvCPP.text = Integer.toString(25)
-//        binding.tvJava.text = Integer.toString(25)
-//        binding.tvPython.text = Integer.toString(25)
-//
-//        binding.piechart.addPieSlice(
-//            PieModel(
-//                "R", binding.tvR.getText().toString().toFloat(),
-//                Color.parseColor("#FFA726")
-//            )
-//        )
-//        binding.piechart.addPieSlice(
-//            PieModel(
-//                "R", binding.tvPython.getText().toString().toFloat(),
-//                Color.parseColor("#66BB6A")
-//            )
-//        )
-//        binding.piechart.addPieSlice(
-//            PieModel(
-//                "R", binding.tvCPP.getText().toString().toFloat(),
-//                Color.parseColor("#EF5350")
-//            )
-//        )
-//        binding.piechart.addPieSlice(
-//            PieModel(
-//                "R", binding.tvJava.getText().toString().toFloat(),
-//                Color.parseColor("#29B6F6")
-//            )
-//        )
-        // Inflate the layout for this fragment
         return root
     }
 
@@ -110,6 +80,8 @@ class SavingsFragment : Fragment() {
                 spinnerYear.adapter = adapter
             }
         }
+
+        // check budget exists when month changed
         spinnerMonth.onItemSelectedListener = object :
             AdapterView.OnItemSelectedListener {
             override fun onItemSelected(
@@ -132,6 +104,8 @@ class SavingsFragment : Fragment() {
             }
         }
 
+
+        // check budget exists when year changed
         spinnerYear.onItemSelectedListener = object :
             AdapterView.OnItemSelectedListener {
             override fun onItemSelected(
@@ -155,27 +129,21 @@ class SavingsFragment : Fragment() {
             }
         }
 
+        // observe changes to budget id
+        // if exists
         savingsViewModel.budgetId.observe(viewLifecycleOwner, {
             if (it.isNullOrEmpty()) {
-                savingsViewModel.getBudget(savingsViewModel.budgetId.value)
-                savingsViewModel.getAllExpenses(
-                    spinnerMonth.selectedItem.toString(),
-                    spinnerYear.selectedItem.toString()
-                )
                 binding.cardViewGraph.visibility = View.GONE
-//                binding.cardViewDetails.visibility = View.VISIBLE
-//                binding.budgetMessage.visibility = View.VISIBLE
             } else {
-                savingsViewModel.getBudget(savingsViewModel.budgetId.value)
-                savingsViewModel.getAllExpenses(
-                    spinnerMonth.selectedItem.toString(),
-                    spinnerYear.selectedItem.toString()
-                )
                 binding.cardViewGraph.visibility = View.VISIBLE
-//                binding.cardViewDetails.visibility = View.VISIBLE
-//                binding.budgetMessage.visibility = View.VISIBLE
             }
+            savingsViewModel.getBudget(savingsViewModel.budgetId.value)
+            savingsViewModel.getAllExpenses(
+                spinnerMonth.selectedItem.toString(),
+                spinnerYear.selectedItem.toString()
+            )
         })
+
 
         savingsViewModel.expenses.observe(viewLifecycleOwner, {
             totalExpenses = 0.0
@@ -216,10 +184,10 @@ class SavingsFragment : Fragment() {
 
             if (totalExpenses > totalBudgetPrice && totalBudgetPrice > 0) {
                 binding.budgetMessage.text =
-                    "Budget Not added for month and year\nExpense Analysis with Respect to total expenses"
+                    "Expenses are greater than the budget\nExpense Analysis with respect to total expenses"
                 amountToCompare = totalExpenses
             } else if (totalExpenses <= totalBudgetPrice && totalBudgetPrice > 0) {
-                binding.budgetMessage.text = "Expense Analysis with Respect to total budget"
+                binding.budgetMessage.text = "Expense Analysis with respect to total budget"
                 amountToCompare = totalBudgetPrice
                 savingsAmount = totalBudgetPrice - totalExpenses
 
@@ -239,7 +207,7 @@ class SavingsFragment : Fragment() {
             var savingsPieData =
                 (savingsAmount / amountToCompare * 100).toFloat()
 
-            if(entertainmentPieData>0){
+            if (entertainmentPieData > 0) {
                 binding.piechart.addPieSlice(
                     PieModel(
                         "Entertainment",
@@ -248,7 +216,7 @@ class SavingsFragment : Fragment() {
                     )
                 )
             }
-            if(hospitalPieData>0) {
+            if (hospitalPieData > 0) {
                 binding.piechart.addPieSlice(
                     PieModel(
                         "Hospital",
@@ -258,7 +226,7 @@ class SavingsFragment : Fragment() {
                 )
             }
 
-            if(educationPieData>0) {
+            if (educationPieData > 0) {
                 binding.piechart.addPieSlice(
                     PieModel(
                         "Education",
@@ -267,7 +235,7 @@ class SavingsFragment : Fragment() {
                     )
                 )
             }
-            if(groceryPieData>0) {
+            if (groceryPieData > 0) {
                 binding.piechart.addPieSlice(
                     PieModel(
                         "Grocery",
@@ -276,7 +244,7 @@ class SavingsFragment : Fragment() {
                     )
                 )
             }
-            if(automotivePieData>0) {
+            if (automotivePieData > 0) {
                 binding.piechart.addPieSlice(
                     PieModel(
                         "Automotive",
@@ -285,7 +253,7 @@ class SavingsFragment : Fragment() {
                     )
                 )
             }
-            if(savingsPieData>0) {
+            if (savingsPieData > 0) {
                 binding.piechart.addPieSlice(
                     PieModel(
                         "Savings",
