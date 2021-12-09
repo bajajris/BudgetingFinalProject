@@ -16,16 +16,19 @@ import java.util.*
 
 class NotifierAlarm : BroadcastReceiver() {
     override fun onReceive(context: Context?, intent: Intent?) {
-        var r: PaymentReminder = PaymentReminder()
-        r.category = "test"
-        r.amount = 999.0
-        r.date = Date().toString()
-        r.note = "this is the note for the reminder"
-        r.payee = "test payee"
-
-        var alarmsound : Uri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION)
 
         val intent1 = Intent(context, ReminderFragment::class.java)
+
+        val r = PaymentReminder()
+        r.category = intent!!.getStringExtra("category").toString()//"test"
+        r.amount = intent.getDoubleExtra("amount",0.0)
+        r.date = intent.getStringExtra("date").toString()
+        r.note = intent.getStringExtra("note").toString()
+        r.payee = intent.getStringExtra("payee").toString()
+
+        val alarmsound : Uri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION)
+
+
 
         intent1.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
 
@@ -43,14 +46,14 @@ class NotifierAlarm : BroadcastReceiver() {
                 NotificationChannel("my_channel_01", "hello", NotificationManager.IMPORTANCE_HIGH)
         }
 
-        val notification: Notification = builder.setContentTitle(r.payee)
+        val notification: Notification = builder.setContentTitle("Reminder! Payment of $" + r.amount +" to " + r.payee)
 //            .setContentText(intent!!.getStringExtra("Message")).setAutoCancel(true)
 //            .setSound(alarmsound).setSmallIcon(R.mipmap.ic_launcher_round)
 //            .setContentIntent(intent2)
 //            .setChannelId("my_channel_01")
 //            .build()
-            .setContentText(r.note).setAutoCancel(true)
-            .setSound(alarmsound).setSmallIcon(R.mipmap.ic_launcher_round)
+            .setContentText(r.category + ", " + r.note).setAutoCancel(true)
+            .setSound(alarmsound).setSmallIcon(R.drawable.applogo)
             .setContentIntent(intent2)
             .setChannelId("my_channel_01")
             .build()
@@ -60,8 +63,6 @@ class NotifierAlarm : BroadcastReceiver() {
             notificationManager.createNotificationChannel(channel!!)
         }
         notificationManager.notify(77, notification)
-        System.out.println("Notification Created!")
-        Log.d("TAG", "Notification Created!")
     }
 
 }

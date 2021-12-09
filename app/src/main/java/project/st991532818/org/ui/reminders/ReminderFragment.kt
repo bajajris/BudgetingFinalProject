@@ -231,8 +231,11 @@ class ReminderFragment : Fragment() {
         calendar.time = Date(paymentReminder.date)
         calendar[Calendar.SECOND] = 0
         val intent = Intent(requireContext(), NotifierAlarm::class.java)
-        intent.putExtra("Message", paymentReminder.note)
-        intent.putExtra("RemindDate", paymentReminder.date)
+        intent.putExtra("note", paymentReminder.note)
+        intent.putExtra("date", paymentReminder.date)
+        intent.putExtra("payee", paymentReminder.payee)
+        intent.putExtra("amount", paymentReminder.amount)
+        intent.putExtra("category", paymentReminder.category)
         intent.putExtra("id", 77)
         val intent1 = PendingIntent.getBroadcast(
             requireContext()
