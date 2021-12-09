@@ -1,9 +1,10 @@
 package project.st991532818.org.ui.reminders
 
-import android.app.AlertDialog
-import android.app.DatePickerDialog
-import android.app.TimePickerDialog
+import android.app.*
 import android.app.TimePickerDialog.OnTimeSetListener
+import android.content.Context
+import android.content.Context.ALARM_SERVICE
+import android.content.Intent
 import android.os.Build
 import android.os.Bundle
 import android.util.Log
@@ -12,6 +13,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.*
 import androidx.annotation.RequiresApi
+import androidx.core.content.ContextCompat.getSystemService
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
@@ -22,6 +24,7 @@ import com.firebase.ui.firestore.FirestoreRecyclerAdapter
 import com.firebase.ui.firestore.FirestoreRecyclerOptions
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
+import project.st991532818.org.NotifierAlarm
 import project.st991532818.org.R
 import project.st991532818.org.databinding.FragmentHomeBinding
 import project.st991532818.org.databinding.FragmentReminderBinding
@@ -212,8 +215,37 @@ class ReminderFragment : Fragment() {
         }
     }
 
+    // this function will invoke when add button will be clicked
     private fun addNewReminder(date: String, category: String, payee: String,  notes: String, amount: Double) {
         reminderViewModel.addNewReminder(date,category,payee,notes,amount)
+        //adding a notification
+        var paymentReminder : PaymentReminder = PaymentReminder()
+        paymentReminder.note = notes;
+        paymentReminder.amount = amount
+        paymentReminder.date = date
+        paymentReminder.category = category
+        paymentReminder.payee = payee
+
+
+        val calendar = Calendar.getInstance(TimeZone.getTimeZone("EST"))
+        calendar.time = Date(paymentReminder.date)
+        calendar[Calendar.SECOND] = 0
+        val intent = Intent(requireContext(), NotifierAlarm::class.java)
+        intent.putExtra("Message", paymentReminder.note)
+        intent.putExtra("RemindDate", paymentReminder.date)
+        intent.putExtra("id", 77)
+        val intent1 = PendingIntent.getBroadcast(
+            requireContext()
+            ,77,
+            intent,
+            PendingIntent.FLAG_UPDATE_CURRENT
+        )
+        //val alarmManager = getSystemService(ALARM_SERVICE) as AlarmManager
+        val alarmManager : AlarmManager = requireContext().getSystemService(Context.ALARM_SERVICE) as AlarmManager
+        alarmManager.setExact(AlarmManager.RTC_WAKEUP, calendar.timeInMillis, intent1)
+
+        Toast.makeText(requireContext(), "Inserted Successfully", Toast.LENGTH_SHORT).show()
+
     }
 
 
