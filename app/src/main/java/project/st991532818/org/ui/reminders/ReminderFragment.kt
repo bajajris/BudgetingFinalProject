@@ -38,7 +38,7 @@ import project.st991532818.org.ui.home.HomeViewModelFactory
 import java.util.*
 /**
  * Name: Raj Rajput
- * Student Id:
+ * Student Id: 991550770
  * Date: 2021-12-7
  * Description: Reminder fragment to add reminders
  */
@@ -142,6 +142,7 @@ class ReminderFragment : Fragment() {
         return root
     }
 
+    // update reminder data
     private fun updateData(uid: String, item: PaymentReminder) {
         val builder = AlertDialog.Builder(context)
 
@@ -152,8 +153,8 @@ class ReminderFragment : Fragment() {
 
         var dialog = builder.create()
 
-        var dateUpdate = mView.findViewById<TextView>(R.id.editTextDateUpdate)
-        dateUpdate.text = item.date
+//        var dateUpdate = mView.findViewById<TextView>(R.id.editTextDateUpdate)
+//        dateUpdate.text = item.date
         var payeeUpdate = mView.findViewById<TextView>(R.id.editTextPayeeUpdate)
         payeeUpdate.text = item.payee
         var categoryUpdate = mView.findViewById<TextView>(R.id.editTextCategoryUpdate)
@@ -164,7 +165,7 @@ class ReminderFragment : Fragment() {
         notesUpdate.text = item.note
 
         mView.findViewById<Button>(R.id.updateButton).setOnClickListener{
-            reminderViewModel.updateReminder(uid, dateUpdate.text.toString(), payeeUpdate.text.toString(), categoryUpdate.text.toString(), amountUpdate.text.toString(), notesUpdate.text.toString() )
+            reminderViewModel.updateReminder(uid, payeeUpdate.text.toString(), categoryUpdate.text.toString(), amountUpdate.text.toString(), notesUpdate.text.toString() )
             dialog.cancel()
         }
         mView.findViewById<Button>(R.id.deleteButton).setOnClickListener{
@@ -187,6 +188,8 @@ class ReminderFragment : Fragment() {
         }
 
         val newCalender = Calendar.getInstance()
+
+        // create date dialog
         binding.select.setOnClickListener{
             val dialog = DatePickerDialog(
                 requireContext(),
@@ -227,6 +230,8 @@ class ReminderFragment : Fragment() {
         paymentReminder.payee = payee
 
 
+
+        // set up notifications
         val calendar = Calendar.getInstance(TimeZone.getTimeZone("EST"))
         calendar.time = Date(paymentReminder.date)
         calendar[Calendar.SECOND] = 0

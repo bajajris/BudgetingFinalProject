@@ -11,7 +11,12 @@ import project.st991532818.org.models.Expense
 import java.util.*
 import kotlin.collections.ArrayList
 
-
+/**
+ * Name: Rishabh Bajaj
+ * Student Id: 991532818
+ * Date: 2021-12-04
+ * Description: Savings fragment view model
+ */
 class SavingsViewModel(private val ff: FirebaseFirestore) : ViewModel() {
 
     var expensesCollection = ff.collection("expenses")
@@ -21,6 +26,7 @@ class SavingsViewModel(private val ff: FirebaseFirestore) : ViewModel() {
     }
     var budgetId: LiveData<String> = _budgetId
 
+    // mutable live data for budget and expenses
     private val _budget = MutableLiveData<Budget>().apply {
         value = Budget()
     }
@@ -40,7 +46,7 @@ class SavingsViewModel(private val ff: FirebaseFirestore) : ViewModel() {
     }
 
 
-
+    // check if budget exists
     private suspend fun budgetExistsLaunch(month: String, year: String) {
         var query = budgetCollection
             .whereEqualTo("month", month)
@@ -54,12 +60,14 @@ class SavingsViewModel(private val ff: FirebaseFirestore) : ViewModel() {
         }
     }
 
+    // get All expenses
     fun getAllExpenses(month: String, year: String) {
         viewModelScope.launch {
             getAllExpensesLaunch(month, year)
         }
     }
 
+    // launch get all expenses
     suspend fun getAllExpensesLaunch(month: String, year: String){
         var query = expensesCollection
             .whereEqualTo("month", month)
@@ -86,6 +94,7 @@ class SavingsViewModel(private val ff: FirebaseFirestore) : ViewModel() {
 
     }
 
+    // get budget from database
     fun getBudget(value: String?) {
         viewModelScope.launch {
             if (value != null) {
@@ -96,6 +105,7 @@ class SavingsViewModel(private val ff: FirebaseFirestore) : ViewModel() {
 
     suspend fun getBudgetLaunch(value: String) {
         _budget.value = Budget()
+        // get budget for data
         if(value.isNotEmpty()){
             var query = budgetCollection
                 .document(value)
@@ -117,6 +127,8 @@ class SavingsViewModel(private val ff: FirebaseFirestore) : ViewModel() {
 
     }
 }
+
+// savings view model factory
 class SavingsViewModelFactory(private val ff: FirebaseFirestore) : ViewModelProvider.Factory {
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
         if (modelClass.isAssignableFrom(SavingsViewModel::class.java)) {

@@ -12,7 +12,12 @@ import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import com.google.firebase.auth.FirebaseAuth
 
-
+/**
+ * Name: Rishabh Bajaj
+ * Student Id: 991532818
+ * Date: 2021-12-04
+ * Description: Splash Screen Activity
+ */
 class SplashScreenActivity : AppCompatActivity() {
     var animation: Animation? = null
     override fun onCreate(savedInstanceState: Bundle?) {

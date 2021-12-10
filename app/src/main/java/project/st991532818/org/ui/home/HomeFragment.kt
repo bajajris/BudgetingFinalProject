@@ -23,7 +23,7 @@ import project.st991532818.org.databinding.ListItemExpenseBinding
 
 /**
  * Name: 1. Raj Rajput, 2. Rishabh Bajaj
- * Student Id:
+ * Student Id: 991550770, 991532818
  * Date: 2021-11-28
  * Description: Home fragment to display expenses for the user and update /delete them
  */

@@ -13,7 +13,12 @@ import project.st991532818.org.models.PaymentReminder
 import project.st991532818.org.models.Reminder
 import project.st991532818.org.ui.reminders.ReminderFragment
 import java.util.*
-
+/**
+ * Name: Raj Rajput
+ * Student Id: 991550770
+ * Date: 2021-12-04
+ * Description: For notification
+ */
 class NotifierAlarm : BroadcastReceiver() {
     override fun onReceive(context: Context?, intent: Intent?) {
 

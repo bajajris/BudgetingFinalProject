@@ -12,7 +12,12 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.google.firebase.auth.FirebaseAuth
 
-
+/**
+ * Name: Raj Rajput
+ * Student Id: 991550770
+ * Date: 2021-12-04
+ * Description: Registration Activity
+ */
 class RegistrationActivity : AppCompatActivity() {
 
     private var mAuth: FirebaseAuth? = null

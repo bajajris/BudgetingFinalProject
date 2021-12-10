@@ -22,7 +22,12 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.NotificationManagerCompat
 import com.google.firebase.auth.FirebaseAuth
 import project.st991532818.org.databinding.ActivityMainBinding
-
+/**
+ * Name: Raj Rajput
+ * Student Id:991550770
+ * Date: 2021-12-04
+ * Description: Main Activity
+ */
 class MainActivity : AppCompatActivity() {
 
     private lateinit var appBarConfiguration: AppBarConfiguration

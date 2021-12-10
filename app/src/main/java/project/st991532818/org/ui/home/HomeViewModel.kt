@@ -5,7 +5,12 @@ import androidx.lifecycle.*
 import kotlinx.coroutines.launch
 import com.google.firebase.firestore.*
 
-
+/**
+ * Name: 1. Raj Rajput, 2. Rishabh Bajaj
+ * Student Id: 991550770, 991532818
+ * Date: 2021-11-28
+ * Description: Home fragment view model
+ */
 class HomeViewModel(private val ff: FirebaseFirestore) : ViewModel() {
 
     var expensesCollection = ff.collection("expenses")

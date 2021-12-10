@@ -145,6 +145,7 @@ class SavingsFragment : Fragment() {
         })
 
 
+        // check if expenses have changed
         savingsViewModel.expenses.observe(viewLifecycleOwner, {
             totalExpenses = 0.0
             educationPrice = 0.0
@@ -182,6 +183,7 @@ class SavingsFragment : Fragment() {
             binding.tvHospital.text = "$ $hospitalPrice"
 
 
+            // display text based on budget
             if (totalExpenses > totalBudgetAmount && totalBudgetAmount > 0) {
                 binding.budgetMessage.text =
                     "Expenses are greater than the budget\nExpense Analysis with respect to total expenses"
@@ -196,6 +198,7 @@ class SavingsFragment : Fragment() {
             binding.tvTotalBudget.text = "$ $totalBudgetAmount"
             binding.tvTotalExpenses.text = "$ $totalExpenses"
 
+            // setup pie chart data
             var entertainmentPieData =
                 (entertainmentPrice / amountToCompare * 100).toFloat()
             var automotivePieData =
@@ -266,6 +269,7 @@ class SavingsFragment : Fragment() {
             }
         })
 
+        // view changes in savings
         savingsViewModel.budget.observe(viewLifecycleOwner, {
             totalBudgetAmount = 0.0
             totalBudgetAmount = it.amount

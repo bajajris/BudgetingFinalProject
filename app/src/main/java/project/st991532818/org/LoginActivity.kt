@@ -15,7 +15,12 @@ import com.google.firebase.auth.AuthResult
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 
-
+/**
+ * Name: Raj Rajput
+ * Student Id: 991550770
+ * Date: 2021-12-04
+ * Description: Login Activity
+ */
 class LoginActivity : AppCompatActivity() {
 
     private var mAuth: FirebaseAuth? = null

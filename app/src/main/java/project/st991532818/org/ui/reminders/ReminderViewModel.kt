@@ -13,7 +13,7 @@ import project.st991532818.org.ui.add_activity.AddActivityViewModel
 import java.util.*
 /**
  * Name: Raj Rajput
- * Student Id:
+ * Student Id: 991550770
  * Date: 2021-12-7
  * Description: Reminder view model to add and get reminders from firestore and send to Fragment to display
  */
@@ -79,12 +79,12 @@ class ReminderViewModel(private val ff: FirebaseFirestore) : ViewModel() {
         )
     }
 
-    fun updateReminder(uid: String, date: String, payee: String, category: String, amount: String, notes: String) {
+    fun updateReminder(uid: String, payee: String, category: String, amount: String, notes: String) {
         viewModelScope.launch {
             reminderCollection.document(
                 uid
             ).update("amount", amount.toDouble(), "category", category, "payee", payee
-            , "date", date, "note", notes).addOnSuccessListener {
+            , "note", notes).addOnSuccessListener {
                 Log.d("TAG", "Document Updated")
             }
         }
