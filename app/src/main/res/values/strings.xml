@@ -53,7 +53,11 @@
 
     <string name="about_text">
         <b>This app is to assist users to track their monthly expenses and budget and keep track of their savings.
-        It also provides deeper insights on their expenses by analysing different categories.</b>
+            It also provides deeper insights on their expenses by analysing different categories.
+        \n
+        Created By: \n
+        1. Raj Rajput (991550770) \n
+        2. Rishabh Bajaj (991532818)</b>
     </string>
     <string name="help_text">
         <b>
