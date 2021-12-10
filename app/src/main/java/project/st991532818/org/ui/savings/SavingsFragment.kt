@@ -37,7 +37,7 @@ class SavingsFragment : Fragment() {
     var entertainmentPrice = 0.0;
     var groceryPrice = 0.0;
     var educationPrice = 0.0;
-    var totalBudgetPrice = 0.0
+    var totalBudgetAmount = 0.0
     var amountToCompare = 0.0
     var savingsAmount = 0.0
     override fun onCreateView(
@@ -182,17 +182,19 @@ class SavingsFragment : Fragment() {
             binding.tvHospital.text = "$ $hospitalPrice"
 
 
-            if (totalExpenses > totalBudgetPrice && totalBudgetPrice > 0) {
+            if (totalExpenses > totalBudgetAmount && totalBudgetAmount > 0) {
                 binding.budgetMessage.text =
                     "Expenses are greater than the budget\nExpense Analysis with respect to total expenses"
                 amountToCompare = totalExpenses
-            } else if (totalExpenses <= totalBudgetPrice && totalBudgetPrice > 0) {
+            } else if (totalExpenses <= totalBudgetAmount && totalBudgetAmount > 0) {
                 binding.budgetMessage.text = "Expense Analysis with respect to total budget"
-                amountToCompare = totalBudgetPrice
-                savingsAmount = totalBudgetPrice - totalExpenses
+                amountToCompare = totalBudgetAmount
+                savingsAmount = totalBudgetAmount - totalExpenses
 
             }
             binding.tvSavings.text = "$ $savingsAmount"
+            binding.tvTotalBudget.text = "$ $totalBudgetAmount"
+            binding.tvTotalExpenses.text = "$ $totalExpenses"
 
             var entertainmentPieData =
                 (entertainmentPrice / amountToCompare * 100).toFloat()
@@ -265,8 +267,8 @@ class SavingsFragment : Fragment() {
         })
 
         savingsViewModel.budget.observe(viewLifecycleOwner, {
-            totalBudgetPrice = 0.0
-            totalBudgetPrice = it.amount
+            totalBudgetAmount = 0.0
+            totalBudgetAmount = it.amount
         })
 
 
