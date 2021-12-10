@@ -84,7 +84,7 @@ class ReminderViewModel(private val ff: FirebaseFirestore) : ViewModel() {
             reminderCollection.document(
                 uid
             ).update("amount", amount.toDouble(), "category", category, "payee", payee
-            , "date", date, "notes", notes).addOnSuccessListener {
+            , "date", date, "note", notes).addOnSuccessListener {
                 Log.d("TAG", "Document Updated")
             }
         }
